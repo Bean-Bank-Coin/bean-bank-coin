@@ -20,6 +20,5 @@ resource "aws_security_group" "mssql_security_group" {
       protocol    = "tcp"
       ipv6_cidr_blocks = ["::/0"] # Allow inbound traffic from any IPv6 address
   }
-
   tags = var.mandatory_tags
 }
