@@ -13,4 +13,3 @@
 - Insert {bean-bank-coin-db-identifier.cbsozziiwdya.eu-west-1.rds.amazonaws.com} as the server name
 - Select SQL sever authentication
 - login as admin
-- Password: 
