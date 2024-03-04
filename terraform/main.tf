@@ -87,4 +87,28 @@ resource "aws_db_instance" "bean-bank-coin-db" {
   tags = var.mandatory_tags
 }
 
+# Define EC2 instance resource
+resource "aws_instance" "spring_boot_instance" {
+  ami           = "ami-0ef9e689241f0bb6e" 
+  instance_type = "t2.micro"  
+  subnet_id     = aws_subnet.subnet_a.id  
+
+  # Define the user data to install Java and run the Spring Boot application
+  # user_data = <<-EOF
+  #             #!/bin/bash
+  #             yum update -y
+  #             yum install -y java-1.8.0-openjdk
+  #             # Additional setup and application deployment commands here
+  #             EOF
+
+  # Associate the instance with the EC2 security group
+  vpc_security_group_ids = [aws_security_group.ec2_security_group.id]
+
+  # Associate the instance with an existing key pair for SSH access
+  key_name = "spring_boot_ec2_key_pair"
+
+  tags = var.mandatory_tags
+}
+
+
 

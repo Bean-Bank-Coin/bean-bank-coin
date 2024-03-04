@@ -52,7 +52,6 @@ resource "aws_iam_role_policy_attachment" "github_action_role_attachment_secrets
   policy_arn = "arn:aws:iam::aws:policy/SecretsManagerReadWrite"
 }
 
-
 resource "aws_iam_role_policy_attachment" "github_action_role_attachment_ec2" {
   role       = aws_iam_role.github_action_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
