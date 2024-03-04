@@ -107,6 +107,12 @@ resource "aws_instance" "spring_boot_instance" {
   # Associate the instance with an existing key pair for SSH access
   key_name = "spring_boot_ec2_key_pair"
 
+  tags = merge(var.mandatory_tags, { Name = "SpringBootInstance" })
+}
+
+resource "aws_eip" "lb" {
+  instance = aws_instance.spring_boot_instance.id
+  domain   = "vpc"
   tags = var.mandatory_tags
 }
 

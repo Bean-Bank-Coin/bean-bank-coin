@@ -59,7 +59,8 @@ resource "aws_security_group" "ec2_security_group" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    security_groups = [aws_security_group.mssql_security_group.id] # this line ensures that the EC2 instance can communicate with the RDS SQL Server database on port 1433 (the default port for SQL Server) by allowing outbound traffic to any destination covered by the rules of the rds_security_group security group.
+    cidr_blocks = ["0.0.0.0/0"]
+    # security_groups = [aws_security_group.mssql_security_group.id] # this line ensures that the EC2 instance can communicate with the RDS SQL Server database on port 1433 (the default port for SQL Server) by allowing outbound traffic to any destination covered by the rules of the rds_security_group security group.
   }
 
   tags = var.mandatory_tags
