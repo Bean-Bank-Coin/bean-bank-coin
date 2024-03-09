@@ -3,7 +3,12 @@ package com.beanbank.api.service;
 import com.beanbank.api.model.User;
 import com.beanbank.api.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.Null;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -19,7 +24,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User getUserByUsername(String username) {
+    public User findUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
