@@ -6,8 +6,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class UserService {
     @Autowired
@@ -29,9 +27,9 @@ public class UserService {
     @Transactional
     public User updateUser(Long userID, User userInfo) {
         User currentUser = userRepository.findById(userID).get();
-        currentUser.setUsername(currentUser.getUsername());
-        currentUser.setPassword(currentUser.getPassword());
-        currentUser.setEmail(currentUser.getEmail());
+        currentUser.setUsername(userInfo.getUsername());
+        currentUser.setPassword(userInfo.getPassword());
+        currentUser.setEmail(userInfo.getEmail());
         return currentUser;
     }
 }
