@@ -20,13 +20,13 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
-    public void deleteUser(Long userID) {
-        userRepository.deleteById(userID);
+    public void deleteUser(int userID) {
+        userRepository.deleteById((long) userID);
     }
 
     @Transactional
-    public User updateUser(Long userID, User userInfo) {
-        User currentUser = userRepository.findById(userID).get();
+    public User updateUser(int userID, User userInfo) {
+        User currentUser = userRepository.findById((long) userID).get();
         currentUser.setUsername(userInfo.getUsername());
         currentUser.setPassword(userInfo.getPassword());
         currentUser.setEmail(userInfo.getEmail());
