@@ -24,12 +24,12 @@ public class UserService {
     }
 
     public void deleteUser(int userID) {
-        userRepository.deleteById((long) userID);
+        userRepository.deleteById(userID);
     }
 
     @Transactional
     public User updateUser(int userID, User userInfo) {
-        User currentUser = userRepository.findById((long) userID).get();
+        User currentUser = userRepository.findById(userID).get();
         currentUser.setUsername(userInfo.getUsername());
         currentUser.setPassword(userInfo.getPassword());
         currentUser.setEmail(userInfo.getEmail());

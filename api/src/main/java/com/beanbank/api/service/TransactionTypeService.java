@@ -16,7 +16,7 @@ public class TransactionTypeService {
     }
 
     public TransactionsType getTransactionTypeByID(int transactionTypeID){
-        return transactionTypeRepository.findById((long) transactionTypeID).get();
+        return transactionTypeRepository.findById(transactionTypeID).get();
     }
 
     public List<TransactionsType> getTransactionTypes(){

@@ -24,7 +24,7 @@ public class AccountService {
     }
 
     public Account updateBalance(int accountID, Account newAccount) {
-        Account account = accountRepository.findById((long) accountID).get();
+        Account account = accountRepository.findById(accountID).get();
         account.setBalanceAmount(newAccount.getBalanceAmount());
         return accountRepository.save(account);
     }
