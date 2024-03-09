@@ -3,13 +3,16 @@ package com.beanbank.api.service;
 import com.beanbank.api.model.User;
 import com.beanbank.api.repository.UserRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    @Autowired
+    final
     UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Transactional
     public User createUser(User user) {
