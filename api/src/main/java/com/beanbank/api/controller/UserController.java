@@ -2,14 +2,17 @@ package com.beanbank.api.controller;
 
 import com.beanbank.api.model.User;
 import com.beanbank.api.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
 public class UserController {
-    @Autowired
+    final
     UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @RequestMapping(value = "/user", method = RequestMethod.POST)
     public User createUser(@RequestBody User user) {
@@ -17,7 +20,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
-    public User getUserByUsername(@PathVariable(value = "username") String username, @RequestBody User user) {
+    public User getUserByUsername(@PathVariable(value = "username") String username) {
         return userService.getUserByUsername(username);
     }
 }

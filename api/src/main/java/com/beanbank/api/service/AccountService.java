@@ -2,7 +2,6 @@ package com.beanbank.api.service;
 
 import com.beanbank.api.model.Account;
 import com.beanbank.api.repository.AccountRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,8 +9,12 @@ import java.util.List;
 @Service
 public class AccountService {
 
-    @Autowired
+    final
     AccountRepository accountRepository;
+
+    public AccountService(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
+    }
 
     // Create Account
     public Account createAccount(Account account) {
