@@ -1,0 +1,51 @@
+{
+	"info": {
+		"_postman_id": "7fd5cb49-bb6a-445e-bc30-ae3fb032bbf9",
+		"name": "TransactionsType",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33495299"
+	},
+	"item": [
+		{
+			"name": "Get All Transaction Types",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/transactionsType",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"transactionsType"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Transaction Type by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/transactionsType/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"transactionsType",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
