@@ -21,29 +21,29 @@ public class AccountController {
     }
 
     @RequestMapping(
-            value="/accounts",
-            method=RequestMethod.POST
+            value = "/accounts",
+            method = RequestMethod.POST
     )
     public Account createAccount(@RequestBody Account account) {
         return accountService.createAccount(account);
     }
 
     @RequestMapping(
-            value="/accounts",
-            method=RequestMethod.GET
+            value = "/accounts",
+            method = RequestMethod.GET
     )
     public List<Account> getAccounts() {
         return accountService.getAccounts();
     }
 
     @RequestMapping(
-            value="/accounts/{accountID}",
-            method=RequestMethod.PUT
+            value = "/accounts/{accountID}",
+            method = RequestMethod.PUT
     )
     public Account updateBalance(
-            @PathVariable (value = "accountID") int accountID,
+            @PathVariable(value = "accountID") int accountID,
             @RequestBody Account accountDetails
-    ){
+    ) {
         return accountService.updateBalance(accountID, accountDetails);
     }
 }
