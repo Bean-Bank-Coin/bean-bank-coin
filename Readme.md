@@ -14,3 +14,6 @@
 - Select SQL sever authentication
 - login as admin
 - Password: 
+
+## SQL Migrations instructions
+- upload your sql to the migrations folder as a new file with this naming convention {year}{month}{day}{24hour}{min}_{description}.sql
