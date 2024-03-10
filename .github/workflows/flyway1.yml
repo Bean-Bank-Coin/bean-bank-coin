@@ -1,4 +1,4 @@
-name: Database Migration
+name: flyway1
 
 on:
   
@@ -30,7 +30,7 @@ jobs:
       #     echo "flyway.url=jdbc:mysql://${{secrets.DB_BUILD_URL}}:3306/${{secrets.DB_NAME}}" >> ./flyway.conf
 
       - name: Run Flyway Migration
-        run: flyway -configFiles="./flyway.conf" -password="${{ secrets.DB_BUILD_PASSWORD }}" migrate
+        run: flyway -configFiles="./flyway.conf" migrate
         # env:
         #   FLYWAY_URL: ${{secrets.DB_BUILD_URL}}
         #   FLYWAY_USER: ${{secrets.DB_BUILD_USERNAME}}
