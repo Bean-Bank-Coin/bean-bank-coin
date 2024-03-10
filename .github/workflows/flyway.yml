@@ -3,7 +3,8 @@ name: Flyway Migrations
 on:
 
   pull_request:
-   
+    # types:
+    #   - closed
     branches:
       - main
   
@@ -25,10 +26,10 @@ jobs:
     - name: Run Flyway Migrations
       env:
         FLYWAY_URL: jdbc:mysql://bean-bank-coin-db-mysql.cbsozziiwdya.eu-west-1.rds.amazonaws.com:3306/bean_bank_coin_db
-        FLYWAY_USER: admin
+        FLYWAY_USER: ${{ secrets.DB_BUILD_USERNAME}
         FLYWAY_PASSWORD: ${{ secrets.DB_BUILD_PASSWORD }}
-        FLYWAY_SCHEMAS: bean_bank_coin_schema
+        FLYWAY_SCHEMAS: bean_bank_coin_db
       run: |
-        flyway clean
-        # flyway repair
-        # flyway migrate
+        flyway repair
+        flyway info
+        flyway migrate
