@@ -8,7 +8,6 @@ import java.util.List;
 
 @Service
 public class AccountService {
-
     final
     AccountRepository accountRepository;
 
@@ -16,18 +15,15 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
-    // Create Account
     public Account createAccount(Account account) {
         return accountRepository.save(account);
     }
 
-    // READ
     public List<Account> getAccounts() {
         return accountRepository.findAll();
     }
 
-    //Update Balance
-    public Account updateBalance(int accountID, Account newAccount){
+    public Account updateBalance(int accountID, Account newAccount) {
         Account account = accountRepository.findById((long) accountID).get();
         account.setBalanceAmount(newAccount.getBalanceAmount());
         return accountRepository.save(account);

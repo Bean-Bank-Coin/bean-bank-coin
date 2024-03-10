@@ -2,6 +2,7 @@ package com.beanbank.api.controller;
 
 import com.beanbank.api.model.User;
 import com.beanbank.api.service.UserService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,7 +21,12 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
-    public User getUserByUsername(@PathVariable(value = "username") String username) {
-        return userService.getUserByUsername(username);
+    public ResponseEntity<User> getUserByUsername(@PathVariable(value = "username") String username) {
+        User foundUser = userService.findUserByUsername(username);
+
+        if (foundUser == null)
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(foundUser);
     }
 }
