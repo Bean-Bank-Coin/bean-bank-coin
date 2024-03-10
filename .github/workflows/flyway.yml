@@ -1,44 +1,42 @@
 name: Flyway Migration
-
-on:
+on: 
   pull_request:
     # types:
     #   - closed
     branches:
-      - main   
+      - main
 
 jobs:
   migrate:
   # if: github.event.pull_request.merged == true
-    runs-on: ubuntu-latest
     name: Run Flyway Migrations
-
+    runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+        - name: Checkout code
+          uses: actions/checkout@v2
 
-    - name: Set up JDK
-      uses: actions/setup-java@v2
-      with:
-        java-version: '11'
+        - name: Set up JDK
+          uses: actions/setup-java@v2
+          with:
+            java-version: '11'
 
-    - name: Download Flyway
-      run: |
-        curl -LJO https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/7.0.0/flyway-commandline-7.0.0-linux-x64.tar.gz
-        tar -xzf flyway-commandline-7.0.0-linux-x64.tar.gz
+        - name: Download Flyway
+          run: |
+            curl -LJO https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/7.0.0/flyway-commandline-7.0.0-linux-x64.tar.gz
+            tar -xzf flyway-commandline-7.0.0-linux-x64.tar.gz
 
-    - name: Create Flyway Configuration
-      run: |
-        echo "[flyway]" > flyway.toml
-        echo "url = 'jdbc:mysql://${{ secrets.DB_BUILD_URL }}:3306'" >> flyway.toml
-        echo "user = '${{ secrets.DB_BUILD_USERNAME }}'" >> flyway.toml
-        echo "password = '${{ secrets.DB_BUILD_PASSWORD }}'" >> flyway.toml
-        echo "locations = ['filesystem:./migrations']" >> flyway.toml  # Update this path to your migrations folder
-        echo "databaseType = 'MySql'" >> flyway.toml
-        echo "schemas = ['${{ secrets.DB_NAME }}']" >> flyway.toml
+        - name: Create Flyway Configuration
+          run: |
+            echo "[flyway]" > flyway.toml
+            echo "url = 'jdbc:mysql://${{ secrets.DB_BUILD_URL }}:3306'" >> flyway.toml
+            echo "user = '${{ secrets.DB_BUILD_USERNAME }}'" >> flyway.toml
+            echo "password = '${{ secrets.DB_BUILD_PASSWORD }}'" >> flyway.toml
+            echo "locations = ['filesystem:./migrations']" >> flyway.toml  # Update this path to your migrations folder
+            echo "databaseType = 'MySql'" >> flyway.toml
+            echo "schemas = ['${{ secrets.DB_NAME }}']" >> flyway.toml
 
-    - name: Run Flyway info
-      run: ./flyway-7.0.0/flyway -configFile=flyway.toml info
+        - name: Run Flyway info
+          run: ./flyway-7.0.0/flyway -configFile=flyway.toml info
 
-    - name: Run Flyway migrate
-      run: ./flyway-7.0.0/flyway -configFile=flyway.toml migrate
+        - name: Run Flyway migrate
+          run: ./flyway-7.0.0/flyway -configFile=flyway.toml migrate
