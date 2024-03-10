@@ -1,0 +1,31 @@
+name: Database Migration
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      - name: Generate Flyway Configuration
+        run: |
+          echo "flyway.url=jdbc:mysql://${{secrets.DB_BUILD_URL}}:3306/${{secrets.DB_NAME}}" > flyway.conf
+          echo "flyway.schemas=${{secrets.DB_NAME}}" >> flyway.conf
+          echo "flyway.user=${{secrets.DB_BUILD_USERNAME}}" >> flyway.conf
+          echo "flyway.password=${{secrets.DB_BUILD_PASSWORD}}" >> flyway.conf
+          echo "flyway.validateMigrationNaming=true" >> flyway.conf
+          echo "flyway.locations=filesystem:sql" >> flyway.conf
+
+      - name: Run Flyway Migration
+        run: flyway -configFiles="./flyway.conf" migrate
