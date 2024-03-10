@@ -6,3 +6,15 @@
 - maven: https://www.geeksforgeeks.org/how-to-install-apache-maven-on-windows/
 - spring-boot: https://docs.spring.io/spring-cli/reference/installation.html
 - filename too long error: https://hub.tcno.co/windows/tips/fix-filename-too-long/
+
+## Connect to DB
+- Download and install MySQL Workbench at Download MySQL Workbench.
+- Open MySQL Workbench.            
+- From Database, choose Manage Connections.
+- In the Manage Server Connections window, choose New.
+- In the Connect to Database window, enter the following information:
+    - Enter a name for the connection – Bean-Bank-Coin-Connection
+    - Hostname – bean-bank-coin-db-mysql.cbsozziiwdya.eu-west-1.rds.amazonaws.com
+    - Port – 3306
+    - Username – admin
+    - Password –

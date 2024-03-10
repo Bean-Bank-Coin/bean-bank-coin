@@ -8,7 +8,7 @@ resource "aws_s3_bucket" "backend-bucket" {
 resource "aws_vpc" "bean_bank_coin_vpc" {
   cidr_block = "15.0.0.0/16"
   enable_dns_hostnames= true
-  tags = var.mandatory_tags
+  tags = merge(var.mandatory_tags, { Name = "Bean-bank-coin-vpc" })
 }
 
 resource "aws_subnet" "subnet_a" {
@@ -64,16 +64,16 @@ resource "aws_route_table_association" "association_b" {
   route_table_id = aws_route_table.bean_bank_coin_route_table.id
 }
 
-# Create an AWS DB instance resource that requires secrets
-resource "aws_db_instance" "bean-bank-coin-db" {
-  allocated_storage    = 20
-  engine               = "sqlserver-ex"
-  engine_version       = "16.00.4095.4.v1"  # 2022 version
-  instance_class       = "db.t3.micro"
-  identifier           = "bean-bank-coin-db-identifier"
+
+resource "aws_db_instance" "bean-bank-coin-db-mysql" {
+  identifier                  = "bean-bank-coin-db-mysql"
+  allocated_storage           = 20
+  engine                      = "mysql"
+  engine_version              = "8.0.35"
+  instance_class              = "db.t3.micro"
+  publicly_accessible         = true
+  username                    = "admin"
   multi_az             = false # Free tier supports only single AZ
-  publicly_accessible  = true  # Enable public access to the database
-  username             = "admin"
   manage_master_user_password = true #Fetch password from console
   apply_immediately = true
   copy_tags_to_snapshot = true
@@ -81,10 +81,11 @@ resource "aws_db_instance" "bean-bank-coin-db" {
   skip_final_snapshot = true
 
   vpc_security_group_ids = [
-    aws_security_group.mssql_security_group.id
+    aws_security_group.mysql_security_group.id
   ]
 
   tags = var.mandatory_tags
+
 }
 
 # Define EC2 instance resource
