@@ -21,7 +21,7 @@ jobs:
           sudo ln -s $(pwd)/flyway-8.5.1/flyway /usr/local/bin/flyway
 
       - name: Run Flyway Migration
-        run: flyway -configFiles="./terraform/flyway.conf" migrate
+        run: flyway -configFiles="./flyway.conf" migrate
         env:
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_USERNAME: ${{ secrets.DB_BUILD_USERNAME }}
