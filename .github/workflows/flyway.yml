@@ -37,5 +37,8 @@ jobs:
         echo "databaseType = 'MySql'" >> flyway.toml
         echo "schemas = ['${{ secrets.DB_NAME }}']" >> flyway.toml
 
-    - name: Run Flyway Migrations
+    - name: Run Flyway info
+      run: ./flyway-7.0.0/flyway -configFile=flyway.toml info
+
+    - name: Run Flyway migrate
       run: ./flyway-7.0.0/flyway -configFile=flyway.toml migrate
