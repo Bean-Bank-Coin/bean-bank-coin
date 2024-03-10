@@ -27,7 +27,8 @@ jobs:
         FLYWAY_URL: jdbc:mysql://bean-bank-coin-db-mysql.cbsozziiwdya.eu-west-1.rds.amazonaws.com:3306/bean_bank_coin_db
         FLYWAY_USER: admin
         FLYWAY_PASSWORD: ${{ secrets.DB_BUILD_PASSWORD }}
-        FLYWAY_SCHEMAS: public2
+        FLYWAY_SCHEMAS: public5
       run: |
+        flyway info
         flyway repair
         flyway migrate
