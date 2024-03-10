@@ -1,4 +1,4 @@
-name: Flyway Migrations
+name: Flyway Migrations tab
 
 on:
   # Allows you to run this workflow manually from the Actions tab
