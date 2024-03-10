@@ -18,7 +18,7 @@ resource "aws_iam_role" "github_action_role" {
                 {
                     "Effect": "Allow",
                     "Principal": {
-                        "Federated": "arn:aws:iam::YOUR_ACCOUNT_NUMBER:oidc-provider/token.actions.githubusercontent.com"
+                        "Federated": "arn:aws:iam::263883060207:oidc-provider/token.actions.githubusercontent.com"
                     },
                     "Action": "sts:AssumeRoleWithWebIdentity",
                     "Condition": {
@@ -40,6 +40,16 @@ resource "aws_iam_role" "github_action_role" {
 resource "aws_iam_role_policy_attachment" "github_action_role_attachment" {
   role       = aws_iam_role.github_action_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "github_action_role_attachment_iam" {
+  role       = aws_iam_role.github_action_role.name
+  policy_arn = "arn:aws:iam::aws:policy/IAMFullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "github_action_role_attachment_secrets" {
+  role       = aws_iam_role.github_action_role.name
+  policy_arn = "arn:aws:iam::aws:policy/SecretsManagerReadWrite"
 }
 
 resource "aws_iam_role_policy_attachment" "github_action_role_attachment_ec2" {
