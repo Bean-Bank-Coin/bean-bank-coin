@@ -1,5 +1,0 @@
-[flyway]
-locations = ["filesystem:migrations"]
-
-[environments.default]
-locations = ["filesystem:migrations"]
