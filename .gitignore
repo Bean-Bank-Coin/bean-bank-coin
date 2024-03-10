@@ -9,6 +9,8 @@ SQL/.vs/SQL/v15/.ssms_suo
 
 *.vs
 
+*.tfvars
+
 # Local .terraform directories
 **/.terraform/*
 
