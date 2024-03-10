@@ -1,4 +1,4 @@
-USE bean_bank_coin;
+USE bean_bank_coin_db;
 
 CREATE TABLE test_table (
     id INT AUTO_INCREMENT PRIMARY KEY,
