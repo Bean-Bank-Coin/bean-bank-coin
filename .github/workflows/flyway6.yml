@@ -3,8 +3,7 @@ name: Flyway6
 on:
   
   pull_request:
-    types:
-      - closed
+   
     branches:
       - main
       
