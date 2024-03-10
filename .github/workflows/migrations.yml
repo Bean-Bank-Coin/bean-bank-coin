@@ -31,3 +31,10 @@ jobs:
 
       - name: Run Flyway Migration
         run: flyway -configFiles="./flyway.conf" migrate
+        env:
+          FLYWAY_URL: ${{secrets.DB_BUILD_URL}}
+          FLYWAY_USER: ${{secrets.DB_BUILD_USERNAME}}
+          FLYWAY_PASSWORD: ${{secrets.DB_BUILD_PASSWORD}}
+          FLYWAY_SCHEMAS: ${{secrets.DB_NAME}}
+          FLYWAY_LOCATIONS: "filesystem:sql"
+        
