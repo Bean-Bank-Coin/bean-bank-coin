@@ -29,4 +29,5 @@ jobs:
         FLYWAY_PASSWORD: ${{ secrets.DB_BUILD_PASSWORD }}
         FLYWAY_SCHEMAS: public2
       run: |
+        flyway repair
         flyway migrate
