@@ -1,0 +1,15 @@
+[flyway]
+locations = ["filesystem:migrations"]
+url = "jdbc:mysql://bean-bank-coin-db-mysql.cbsozziiwdya.eu-west-1.rds.amazonaws.com:3306/bean_bank_coin_db"
+schemas = "bean_bank_coin_db"
+user = "admin"
+password = "Sxj~eL$_1m#YXno%nL_}W.X2_YLe"
+validateMigrationNaming = true
+
+[environments.default]
+locations = ["filesystem:migrations"]
+url = "jdbc:mysql://bean-bank-coin-db-mysql.cbsozziiwdya.eu-west-1.rds.amazonaws.com:3306/bean_bank_coin_db"
+schemas = "bean_bank_coin_db"
+user = "admin"
+password = "Sxj~eL$_1m#YXno%nL_}W.X2_YLe"
+validateMigrationNaming = true
