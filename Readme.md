@@ -21,3 +21,10 @@
 
 ## SQL Migrations instructions
 - upload your sql to the migrations folder as a new file with this naming convention V{year}{month}{day}{24hour}{min}_{description}.sql
+
+## Run server 
+- cd api
+- Insert password into api > src > main > resources > application.properties [DON'T COMMIT YOUR PASSWORD]
+- run mvn clean install 
+- run springboot dashboard run 
+- launch postman and import postman folder 

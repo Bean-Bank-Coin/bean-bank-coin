@@ -3,6 +3,10 @@ SQL/.vs/SQL/v15/.ssms_suo
 
 *.env
 
+*.vscode
+
+*.idea
+
 *.lock.hcl
 
 *.state
