@@ -1,0 +1,72 @@
+{
+	"info": {
+		"_postman_id": "9deaf102-4058-41e3-94f2-9004cd029042",
+		"name": "Transactions",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33432729"
+	},
+	"item": [
+		{
+			"name": "CreateTransaction",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"SenderID\": 1,\r\n    \"ReceiverID\": 2,\r\n    \"TransactionTypeID\": 1,\r\n    \"TransactionAmount\": 300,\r\n    \"TransactionTimestamp\": \"2024-03-11\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/transaction",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"transaction"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ViewTransactions",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"SenderID\": 1,\r\n    \"ReceiverID\": 2,\r\n    \"TransactionTypeID\": 1,\r\n    \"TransactionAmount\": 300,\r\n    \"TransactionTimestamp\": \"2024-03-09\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/transaction/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"transaction",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
