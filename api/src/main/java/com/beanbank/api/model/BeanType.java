@@ -11,10 +11,10 @@ public class BeanType {
     @Column(name = "BeanTypeID")
     private int beanTypeID;
 
-    @Column(name = "BeanName")
+    @Column(name = "BeanName", unique=true)
     private String beanName;
 
-    @Column(name = "BeanSymbol")
+    @Column(name = "BeanSymbol", unique=true)
     private String beanSymbol;
 
     @Column(name = "ValueInRands")

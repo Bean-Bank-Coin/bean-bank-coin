@@ -10,13 +10,13 @@ public class User {
     @Column(name="UserID")
     private int userID;
 
-    @Column(name="Username")
+    @Column(name="Username", unique=true)
     private String username;
 
     @Column(name="Password")
     private String password;
 
-    @Column(name="Email")
+    @Column(name="Email", unique=true)
     private String email;
 
 
