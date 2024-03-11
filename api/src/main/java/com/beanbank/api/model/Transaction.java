@@ -2,9 +2,7 @@ package com.beanbank.api.model;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
-
-import io.micrometer.common.lang.NonNull;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Transactions")
@@ -27,7 +25,7 @@ public class Transaction {
     private int transactionAmount;
 
     @Column(name = "TransactionTimestamp")
-    private Date transactionTimestamp;
+    private LocalDateTime transactionTimestamp;
 
     public int getTransactionID() {
         return this.transactionID;
@@ -69,11 +67,11 @@ public class Transaction {
         this.transactionAmount = transactionAmount;
     }
 
-    public Date getTransactionTimestamp() {
+    public LocalDateTime getTransactionTimestamp() {
         return this.transactionTimestamp;
     }
 
-    public void setTransactionTimestamp(Date transactionTimestamp) {
+    public void setTransactionTimestamp(LocalDateTime transactionTimestamp) {
         this.transactionTimestamp = transactionTimestamp;
     }
 }
