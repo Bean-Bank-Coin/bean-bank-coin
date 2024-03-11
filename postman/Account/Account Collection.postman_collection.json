@@ -56,7 +56,7 @@
 			"response": []
 		},
 		{
-			"name": "Update Balnce",
+			"name": "Update Balance",
 			"request": {
 				"method": "PUT",
 				"header": [],
