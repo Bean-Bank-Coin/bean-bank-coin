@@ -1,7 +1,7 @@
 package com.beanbank.api.controller;
 
-import com.models.User;
 import com.beanbank.api.service.UserService;
+import com.models.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

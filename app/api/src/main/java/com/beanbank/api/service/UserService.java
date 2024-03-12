@@ -1,7 +1,7 @@
 package com.beanbank.api.service;
 
-import com.models.User;
 import com.beanbank.api.repository.UserRepository;
+import com.models.User;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 

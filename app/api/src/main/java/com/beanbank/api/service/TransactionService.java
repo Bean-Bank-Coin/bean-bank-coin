@@ -1,25 +1,15 @@
 package com.beanbank.api.service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Map;
-import java.math.BigDecimal;
-import java.util.HashMap;
-
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
+import com.beanbank.api.repository.*;
 import com.models.Account;
 import com.models.BeanType;
-import com.models.TransactionsType;
 import com.models.Transaction;
-import com.beanbank.api.repository.AccountRepository;
-import com.beanbank.api.repository.BeanTypeRepository;
-import com.beanbank.api.repository.TransactionRepository;
-import com.beanbank.api.repository.TransactionsTypeRepository;
-import com.beanbank.api.repository.UserRepository;
-
+import com.models.TransactionsType;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.*;
 
 @Service
 public class TransactionService {
