@@ -38,3 +38,9 @@
 - run mvn test
 ### Postman for mock api calls
 - launch postman and import postman folder 
+
+## Run the jar file in a seperate environment
+- download elicpse-temurin jdk 21 lts
+- copy the jar file and env.properties into a seperate folder
+- cd into that folder 
+- run java -jar api-0.0.1-SNAPSHOT.jar
