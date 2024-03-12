@@ -3,8 +3,6 @@ package com.beanbank.api.model;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,7 +28,7 @@ public class Transaction {
     private int transactionTypeID;
 
     @Column(name = "TransactionAmount")
-    private int transactionAmount;
+    private BigDecimal transactionAmount;
 
     @Column(name = "TransactionTimestamp")
     private LocalDateTime transactionTimestamp;
@@ -68,11 +66,11 @@ public class Transaction {
     }
 
     public BigDecimal getTransactionAmount() {
-        return BigDecimal.valueOf(this.transactionAmount);
+        return this.transactionAmount;
     }
 
     public void setTransactionAmount(BigDecimal transactionAmount) {
-        this.transactionAmount = transactionAmount.intValue();
+        this.transactionAmount = transactionAmount;
     }
 
     public LocalDateTime getTransactionTimestamp() {
