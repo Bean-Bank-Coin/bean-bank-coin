@@ -29,7 +29,7 @@ public class TransactionService {
     final TransactionsTypeRepository transactionsTypeRepository;
     final BeanTypeRepository beanTypeRepository;
 
-    private Map<Integer, Integer> beanConversionRates;
+    private Map<Integer, BigDecimal> beanConversionRates;
 
     public TransactionService(TransactionRepository transactionRepository,
             TransactionsTypeRepository transactionsTypeRepository,
@@ -67,7 +67,7 @@ public class TransactionService {
         String transactionTypeName = transactionType.getTransactionTypeName();
 
         if (transactionTypeName.equals("Deposit") || transactionTypeName.equals("Withdrawal")) {
-            BigDecimal conversionRate = BigDecimal.valueOf(beanConversionRates.get(senderAccount.getBeanTypeID()));
+            BigDecimal conversionRate = beanConversionRates.get(senderAccount.getBeanTypeID());
             BigDecimal senderBalance = senderAccount.getBalanceAmount();
             BigDecimal newBalance;
 
@@ -79,10 +79,8 @@ public class TransactionService {
 
             senderAccount.setBalanceAmount(newBalance);
         } else if (transactionTypeName.equals("Transfer")) {
-            BigDecimal senderConversionRate = BigDecimal
-                    .valueOf(beanConversionRates.get(senderAccount.getBeanTypeID()));
-            BigDecimal receiverConversionRate = BigDecimal
-                    .valueOf(beanConversionRates.get(receiverAccount.getBeanTypeID()));
+            BigDecimal senderConversionRate = beanConversionRates.get(senderAccount.getBeanTypeID());
+            BigDecimal receiverConversionRate = beanConversionRates.get(receiverAccount.getBeanTypeID());
 
             BigDecimal senderBalance = senderAccount.getBalanceAmount();
             BigDecimal receiverBalance = receiverAccount.getBalanceAmount();
