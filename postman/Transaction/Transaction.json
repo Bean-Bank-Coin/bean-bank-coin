@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "d70a01a3-3991-497c-af6d-64bf07500fda",
+		"_postman_id": "970065aa-def5-4f19-94c1-cfba38e86d97",
 		"name": "Transactions",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "33495299"
+		"_exporter_id": "33432729"
 	},
 	"item": [
 		{
@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"SenderID\": 1,\r\n    \"ReceiverID\": 2,\r\n    \"TransactionTypeID\": 1,\r\n    \"TransactionAmount\": 300,\r\n    \"TransactionTimestamp\": \"2024-03-11\"\r\n}",
+					"raw": "{\r\n    \"senderID\": 1,\r\n    \"receiverID\": 2,\r\n    \"transactionTypeID\": 3,\r\n    \"transactionAmount\": 5000,\r\n    \"transactionTimestamp\": \"2024-03-12T10:15:30\"\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"

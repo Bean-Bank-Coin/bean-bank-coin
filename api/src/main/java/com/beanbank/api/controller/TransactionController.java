@@ -20,7 +20,7 @@ public class TransactionController {
 
     @RequestMapping(value = "/transaction", method = RequestMethod.PUT)
     public Transaction addTransaction(@RequestBody Transaction transaction) {
-        return transactionService.createTransaction(transaction);
+        return transactionService.makeTransaction(transaction);
     }
 
     @RequestMapping(value = "/transaction/{accountID}", method = RequestMethod.GET)

@@ -1,8 +1,14 @@
 package com.beanbank.api.model;
 
-import jakarta.persistence.*;
-
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Transactions")
@@ -22,7 +28,7 @@ public class Transaction {
     private int transactionTypeID;
 
     @Column(name = "TransactionAmount")
-    private int transactionAmount;
+    private BigDecimal transactionAmount;
 
     @Column(name = "TransactionTimestamp")
     private LocalDateTime transactionTimestamp;
@@ -59,11 +65,11 @@ public class Transaction {
         this.transactionTypeID = transactionTypeID;
     }
 
-    public int getTransactionAmount() {
+    public BigDecimal getTransactionAmount() {
         return this.transactionAmount;
     }
 
-    public void setTransactionAmount(int transactionAmount) {
+    public void setTransactionAmount(BigDecimal transactionAmount) {
         this.transactionAmount = transactionAmount;
     }
 
