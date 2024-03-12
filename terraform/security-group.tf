@@ -33,7 +33,7 @@ resource "aws_security_group" "mysql_security_group" {
       from_port   = 8080
       to_port     = 8080
       protocol    = "tcp"
-      cidr_blocks = ["::/0"] # Allow inbound traffic from any IPv4 address
+      ipv6_cidr_blocks = ["::/0"] # Allow inbound traffic from any IPv4 address
   }
 
   # Define outbound rule to allow traffic to the EC2 instance from the RDS database
