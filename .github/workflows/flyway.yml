@@ -30,6 +30,6 @@ jobs:
         FLYWAY_PASSWORD: ${{ secrets.DB_BUILD_PASSWORD }}
         FLYWAY_SCHEMAS: bean_bank_coin_schema
       run: |
-        # flyway repair
+        flyway repair
         flyway info
         flyway migrate
