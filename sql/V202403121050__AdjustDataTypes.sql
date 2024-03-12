@@ -1,3 +1,5 @@
+Use bean_bank_coin_schema;
+
 ALTER TABLE
     BeanType
 MODIFY

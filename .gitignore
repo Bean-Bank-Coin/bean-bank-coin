@@ -1,6 +1,8 @@
 SQL/.vs/slnx.sqlite
 SQL/.vs/SQL/v15/.ssms_suo
 
+flywaylocal.conf
+
 *.env
 
 *.vscode
