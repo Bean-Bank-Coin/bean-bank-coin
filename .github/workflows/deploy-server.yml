@@ -23,7 +23,13 @@ jobs:
         distribution: 'temurin'
         java-version: '21'
 
-    - name: Build Project
+    - name: Build shared
+      run: |
+          cd app
+          cd shared
+          mvn clean install -DskipTests
+
+    - name: Build api
       run: |
           cd app
           cd api
