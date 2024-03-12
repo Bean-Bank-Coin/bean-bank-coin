@@ -1,8 +1,7 @@
 package com.beanbank.api.controller;
 
-import com.models.Transaction;
 import com.beanbank.api.service.TransactionService;
-
+import com.models.Transaction;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
