@@ -40,7 +40,7 @@
 - launch postman and import postman folder 
 
 ## Run the jar file in a seperate environment
-- download elicpse-temurin jdk 21 lts
+- download elicpse-temurin jdk 21 lts {https://adoptium.net/temurin/releases/?os=alpine-linux&package=jdk&arch=x64}
 - copy the jar file and env.properties into a seperate folder
 - cd into that folder 
 - run java -jar api-0.0.1-SNAPSHOT.jar

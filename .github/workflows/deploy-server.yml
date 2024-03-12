@@ -1,0 +1,52 @@
+name: Deploy Server
+
+on:
+
+  pull_request:
+    # types:
+    #   - closed
+    branches:
+      - main
+
+jobs:
+  build:
+    # if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '21'
+
+    - name: Build Project
+      run: mvn clean install -DskipTests
+
+    - name: Login to docker hub
+      run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build docker image
+      run: |
+          cd api
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/bean-bank-coin .
+
+    - name: Publish image to Docker-hub
+      run: |
+          cd api
+          docker push ${{ secrets.DOCKER_USERNAME }}/bean-bank-coin:latest
+
+  deploy:
+    needs: build
+    # if: github.event.pull_request.merged == true
+    runs-on: [aws-ec2]
+    steps:
+      - name: Pull Image from docker hub
+        run: docker pull ${{ secrets.DOCKER_USERNAME }}/bean-bank-coin:latest
+      - name: Delete old container
+        run: docker rm -f bean-bank-coin-container
+      - name: Run docker container
+        run: docker run -d -p 8080:8080 --name bean-bank-coin-container ${{ secrets.DOCKER_USERNAME }}/bean-bank-coin
