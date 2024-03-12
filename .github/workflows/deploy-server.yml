@@ -26,6 +26,7 @@ jobs:
     - name: Build Project
       run: |
           cd app
+          cd api
           mvn clean install -DskipTests
 
     - name: Login to docker hub
