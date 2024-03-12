@@ -22,6 +22,20 @@ resource "aws_security_group" "mysql_security_group" {
   }
   tags = var.mandatory_tags
 
+  ingress {
+      from_port   = 8080
+      to_port     = 8080
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"] # Allow inbound traffic from any IPv4 address
+  }
+
+   ingress {
+      from_port   = 8080
+      to_port     = 8080
+      protocol    = "tcp"
+      cidr_blocks = ["::/0"] # Allow inbound traffic from any IPv4 address
+  }
+
   # Define outbound rule to allow traffic to the EC2 instance from the RDS database
   egress {
     from_port   = 0

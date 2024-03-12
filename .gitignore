@@ -3,6 +3,10 @@ SQL/.vs/SQL/v15/.ssms_suo
 
 flywaylocal.conf
 
+api
+
+env.properties
+
 *.env
 
 *.vscode
