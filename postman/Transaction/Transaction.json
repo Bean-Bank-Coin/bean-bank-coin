@@ -36,39 +36,6 @@
 			"response": []
 		},
 		{
-			"name": "ViewTransactions",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"SenderID\": 1,\r\n    \"ReceiverID\": 2,\r\n    \"TransactionTypeID\": 1,\r\n    \"TransactionAmount\": 300,\r\n    \"TransactionTimestamp\": \"2024-03-09\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/api/transaction/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"transaction",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Transaction History",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -86,7 +53,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/transaction/history/1/1",
+					"raw": "http://localhost:8080/api/transaction/history/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -96,7 +63,6 @@
 						"api",
 						"transaction",
 						"history",
-						"1",
 						"1"
 					]
 				}
