@@ -59,8 +59,8 @@ jobs:
     runs-on: [aws-ec2]
     steps:
       - name: Pull Image from docker hub
-        run: docker pull ${{ secrets.DOCKER_USERNAME }}/bean-bank-coin:latest
+        run: sudo docker pull ${{ secrets.DOCKER_USERNAME }}/bean-bank-coin:latest
       - name: Delete old container
-        run: docker rm -f bean-bank-coin-container
+        run: sudo docker rm -f bean-bank-coin-container
       - name: Run docker container
-        run: docker run -d -p 8080:8080 --name bean-bank-coin-container ${{ secrets.DOCKER_USERNAME }}/bean-bank-coin
+        run: sudo docker run -d -p 8080:8080 --name bean-bank-coin-container ${{ secrets.DOCKER_USERNAME }}/bean-bank-coin
