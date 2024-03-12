@@ -1,8 +1,11 @@
 package com.beanbank.api.controller;
 
-import com.models.TransactionsType;
 import com.beanbank.api.service.TransactionTypeService;
-import org.springframework.web.bind.annotation.*;
+import com.models.TransactionsType;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 

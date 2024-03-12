@@ -1,11 +1,10 @@
 package com.beanbank.api.service;
 
-import java.util.List;
-
+import com.beanbank.api.repository.BeanTypeRepository;
+import com.models.BeanType;
 import org.springframework.stereotype.Service;
 
-import com.models.BeanType;
-import com.beanbank.api.repository.BeanTypeRepository;
+import java.util.List;
 
 @Service
 public class BeanTypeService {

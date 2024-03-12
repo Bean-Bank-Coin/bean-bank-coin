@@ -1,7 +1,7 @@
 package com.beanbank.api.service;
 
-import com.models.Account;
 import com.beanbank.api.repository.AccountRepository;
+import com.models.Account;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
