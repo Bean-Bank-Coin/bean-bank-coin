@@ -24,7 +24,9 @@ jobs:
         java-version: '21'
 
     - name: Build Project
-      run: mvn clean install -DskipTests
+      run: |
+          cd api
+          mvn clean install -DskipTests
 
     - name: Login to docker hub
       run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
