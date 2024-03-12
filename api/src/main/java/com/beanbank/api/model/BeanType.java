@@ -1,7 +1,8 @@
 package com.beanbank.api.model;
 
-import jakarta.persistence.*;
+import java.math.BigDecimal;
 
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "BeanType")
@@ -11,14 +12,14 @@ public class BeanType {
     @Column(name = "BeanTypeID")
     private int beanTypeID;
 
-    @Column(name = "BeanName", unique=true)
+    @Column(name = "BeanName", unique = true)
     private String beanName;
 
-    @Column(name = "BeanSymbol", unique=true)
+    @Column(name = "BeanSymbol", unique = true)
     private String beanSymbol;
 
     @Column(name = "ValueInRands")
-    private int valueInRands;
+    private BigDecimal valueInRands;
 
     public int getBeanTypeID() {
         return beanTypeID;
@@ -44,11 +45,11 @@ public class BeanType {
         this.beanSymbol = beanSymbol;
     }
 
-    public int getValueInRands() {
+    public BigDecimal getValueInRands() {
         return valueInRands;
     }
 
-    public void setValueInRands(int valueInRands) {
+    public void setValueInRands(BigDecimal valueInRands) {
         this.valueInRands = valueInRands;
     }
 }
