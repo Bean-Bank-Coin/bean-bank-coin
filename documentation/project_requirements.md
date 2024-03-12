@@ -33,3 +33,4 @@
 - Java 21 or newer only
 - Only libraries that constitute part of Spring are allowed (e.g., https://start.spring.io/)
 - Explanation required for any libraries used, including their functionality and rationale behind their usage
+
