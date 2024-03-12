@@ -104,12 +104,8 @@ public class TransactionService {
         return transactionRepository.save(transaction);
     }
 
-    public List<Transaction> getTransactionsForAccount(int accountID) {
-        return transactionRepository.findBySenderIDOrReceiverID(accountID, accountID);
-    }
-
-    public List<Map<String, Object>> getHistory(int senderID, int receiverID) {
-        List<Object[]> transactionDetails = transactionRepository.transactionDetails(senderID, receiverID);
+    public List<Map<String, Object>> getHistory(int accountID) {
+        List<Object[]> transactionDetails = transactionRepository.transactionDetails(accountID);
         List<Map<String, Object>> formattedDetails = new ArrayList<>();
 
         for (Object[] row : transactionDetails) {

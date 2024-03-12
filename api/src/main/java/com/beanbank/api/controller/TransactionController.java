@@ -23,16 +23,9 @@ public class TransactionController {
         return transactionService.makeTransaction(transaction);
     }
 
-    @RequestMapping(value = "/transaction/{accountID}", method = RequestMethod.GET)
-    public List<Transaction> getTransactions(@PathVariable(name = "accountID") int accountID) {
-        return transactionService.getTransactionsForAccount(accountID);
-    }
-
-    @RequestMapping(value = "/transaction/history/{senderID}/{receiverID}", method = RequestMethod.GET)
+    @RequestMapping(value = "/transaction/history/{accountID}", method = RequestMethod.GET)
     public List<Map<String, Object>> getHistory(
-            @PathVariable(name = "senderID") int senderID,
-            @PathVariable(name = "receiverID") int receiverID
-    ){
-        return transactionService.getHistory(senderID, receiverID);
+            @PathVariable(name = "accountID") int accountID) {
+        return transactionService.getHistory(accountID);
     }
 }
