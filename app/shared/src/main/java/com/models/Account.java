@@ -1,32 +1,34 @@
 package com.models;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
 @Table(name = "Account")
+@NoArgsConstructor
 public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="AccountID")
+    @Column(name = "AccountID")
     private int accountID;
 
-    @Column(name="UserID")
+    @Column(name = "UserID")
     private int userID;
 
-    @Column(name="BeanTypeID")
+    @Column(name = "BeanTypeID")
     private int beanTypeID;
 
-    @Column(name="BalanceAmount")
+    @Column(name = "BalanceAmount")
     private BigDecimal balanceAmount;
 
-    @Column(name="DateCreated")
+    @Column(name = "DateCreated")
     private Date dateCreated;
 
-    @Column(name="IsClosed")
+    @Column(name = "IsClosed")
     private Boolean isClosed;
 
     public int getAccountID() {

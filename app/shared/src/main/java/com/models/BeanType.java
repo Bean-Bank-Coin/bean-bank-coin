@@ -1,11 +1,13 @@
 package com.models;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "BeanType")
+@NoArgsConstructor
 public class BeanType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

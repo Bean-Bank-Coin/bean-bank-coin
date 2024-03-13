@@ -1,22 +1,29 @@
 package com.models;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="User")
+@NoArgsConstructor
+@Table(name = "User")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="UserID")
+    @Column(name = "UserID")
     private int userID;
 
-    @Column(name="Username", unique=true)
+    @Column(name = "Username", unique = true)
     private String username;
 
-    @Column(name="Password")
+    @Column(name = "Password")
     private String password;
 
-    @Column(name="Email", unique=true)
+    @Column(name = "Email", unique = true)
     private String email;
 
     public User(int userID, String username, String password, String email) {

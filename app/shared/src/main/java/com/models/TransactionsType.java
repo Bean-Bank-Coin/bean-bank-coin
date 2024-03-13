@@ -1,16 +1,18 @@
 package com.models;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "TransactionsType")
+@NoArgsConstructor
 public class TransactionsType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="TransactionTypeID")
+    @Column(name = "TransactionTypeID")
     private int transactionTypeID;
 
-    @Column(name="TransactionTypeName")
+    @Column(name = "TransactionTypeName")
     private String transactionTypeName;
 
     public int getTransactionTypeID() {
