@@ -45,10 +45,12 @@
 ## Create a new release
 - merge main into the release branch
 - update localhost to 54.195.208.130 in the cli module
-- commit and push to main 
-- Navigate to github and create a release from the release branch 
+- commit and push to origin release 
+- Navigate to github and select create a new release
+- Select releases as your target branch
 
 ## Run official cli package from releases 
 - Download elicpse-temurin jdk 21 lts {https://adoptium.net/temurin/releases/?os=alpine-linux&package=jdk&arch=x64}
 - Or run mvn install
-- run java -jar {java package name}.jar
+- Download the latest cli-xxx.jar file
+- run java -jar {name}.jar
