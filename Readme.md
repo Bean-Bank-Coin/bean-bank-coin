@@ -25,7 +25,7 @@
 ## SQL Migrations instructions
 - upload your sql to the migrations folder as a new file with this naming convention V{year}{month}{day}{24hour}{min}__{description}.sql
 
-## Run server 
+## Run local server and cli
 - Make sure you have an env.properties file with the environment variables
 ### `Build`
 - cd into app
@@ -40,10 +40,17 @@
 - run mvn test
 
 ### Postman for mock api calls
-- launch postman and import postman folder 
+- Launch postman and import postman folder 
 
-## Run the jar file in a seperate environment
-- download elicpse-temurin jdk 21 lts {https://adoptium.net/temurin/releases/?os=alpine-linux&package=jdk&arch=x64}
-- copy the jar file and env.properties into a seperate folder
-- cd into that folder 
-- run java -jar api-0.0.1-SNAPSHOT.jar
+## Create a new release
+- merge main into the release branch
+- update localhost to 54.195.208.130 in the cli module
+- commit and push to origin release 
+- Navigate to github and select create a new release
+- Select releases as your target branch
+
+## Run official cli package from releases 
+- Download elicpse-temurin jdk 21 lts {https://adoptium.net/temurin/releases/?os=alpine-linux&package=jdk&arch=x64}
+- Or run mvn install
+- Download the latest cli-xxx.jar file
+- run java -jar {name}.jar
