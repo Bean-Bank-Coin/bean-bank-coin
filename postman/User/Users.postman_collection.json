@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "59267bb4-c3ad-4954-ade2-1b758b951c78",
+		"_postman_id": "f3c96660-7703-4c7d-bf1d-5da4b1ad4d62",
 		"name": "Users",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "33495299"
@@ -8,6 +8,38 @@
 	"item": [
 		{
 			"name": "Create User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Create Account Test\r",
+							"pm.test(\"Create Account\", function () {\r",
+							"    pm.sendRequest({\r",
+							"        url: \"http://localhost:8080/api/user\",\r",
+							"        method: 'POST',\r",
+							"        header: {\r",
+							"            'Content-Type': 'application/json'\r",
+							"        },\r",
+							"        body: {\r",
+							"            mode: 'raw',\r",
+							"            raw: JSON.stringify({\r",
+							"                username: \"nothingHere\",\r",
+							"                password: \"anythig\",\r",
+							"                email: \"anythig@gmail.com\",\r",
+							"            })\r",
+							"        }\r",
+							"    }, function (err, response) {\r",
+							"        pm.expect(err).to.be.null;\r",
+							"        pm.expect(response).to.have.property('code', 200); \r",
+							"    });\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -37,11 +69,45 @@
 		},
 		{
 			"name": "Get User By Username",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Get user by username\", function () {\r",
+							"    pm.sendRequest({\r",
+							"        url: \"http://localhost:8080/api/user/JakeCole\",\r",
+							"        method: 'GET'\r",
+							"    }, \r",
+							"    \r",
+							"    function (err, response) {\r",
+							"        pm.expect(err).to.be.null;\r",
+							"        pm.expect(response).to.have.property('code', 200); \r",
+							"    });\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "http://localhost:8080/api/user/TestUserName",
+					"raw": "http://localhost:8080/api/user/JakeCole",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -50,7 +116,7 @@
 					"path": [
 						"api",
 						"user",
-						"TestUserName"
+						"JakeCole"
 					]
 				}
 			},
