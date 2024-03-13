@@ -1,19 +1,20 @@
 package session;
 
+import java.io.Console;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.Scanner;
+
+import com.google.common.hash.Hashing;
 import com.models.Account;
 import com.models.BeanType;
 import com.models.User;
 
 import request.UserRequest;
 import util.UserInputHandler;
-
-import java.io.Console;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
 
 public class Session {
     private User currentUser;
@@ -53,6 +54,9 @@ public class Session {
         if (userOption.equals("L")) {
             String username = inputHandler.handleUserInput(scanner, USERNAME_PROMPT, Collections.emptyList());
             String password = new String(console.readPassword("Enter a password: "));
+            password = Hashing.sha256()
+                    .hashString(password, StandardCharsets.UTF_8)
+                    .toString();
 
             Optional<User> userOptional = UserRequest.getInstance().getUser(username);
 
@@ -72,6 +76,9 @@ public class Session {
         String username = inputHandler.handleUserInput(scanner, USERNAME_PROMPT, Collections.emptyList());
         String email = inputHandler.handleUserInput(scanner, "Enter your email: ", Collections.emptyList());
         String password = new String(console.readPassword("Enter a password: "));
+        password = Hashing.sha256()
+                .hashString(password, StandardCharsets.UTF_8)
+                .toString();
 
         Optional<User> userOptional = UserRequest.getInstance().getUser(username);
 
