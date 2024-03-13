@@ -5,6 +5,8 @@ flywaylocal.conf
 
 api
 
+releases
+
 env.properties
 
 *.env

@@ -1,12 +1,9 @@
 name: Publish package to GitHub Packages
 on:
-  # release:
-  #   types: [created]
-  pull_request:
-    # types:
-    #   - closed
+  release:
+    types: [created]
     branches:
-      - main
+      - releases
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -19,9 +16,15 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
+      - name: Build shared
+        run: |
+            cd app
+            cd shared
+            mvn clean install
       - name: Publish package
         run: |
             cd app
+            cd cli
             mvn --batch-mode deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
