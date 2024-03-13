@@ -8,8 +8,7 @@ import java.util.List;
 
 @Service
 public class AccountService {
-    final
-    AccountRepository accountRepository;
+    final AccountRepository accountRepository;
 
     public AccountService(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
@@ -19,8 +18,8 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
-    public List<Account> getAccounts() {
-        return accountRepository.findAll();
+    public List<Account> getAccountsForUser(int userID) {
+        return accountRepository.findByUserID(userID);
     }
 
     public Account updateBalance(int accountID, Account newAccount) {
