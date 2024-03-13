@@ -46,7 +46,7 @@ public class Session {
         String userInput = scanner.nextLine();
 
         while (!userInput.equals(LOGOUT_COMMAND) && !userInput.equals(SessionManager.EXIT_COMMAND)) {
-            System.out.println(LINE_PROMPT);
+            System.out.print(LINE_PROMPT);
             userInput = scanner.nextLine();
         }
 

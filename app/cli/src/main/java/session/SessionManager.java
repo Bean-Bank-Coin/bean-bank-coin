@@ -27,8 +27,8 @@ public class SessionManager {
     public void startSession() {
         Scanner scanner = new Scanner(System.in);
 
-        String exitCommand = "";
         Session session = new Session();
+        String exitCommand = session.startSession(scanner);
 
         while (!exitCommand.equals(EXIT_COMMAND)) {
             exitCommand = session.startSession(scanner);
