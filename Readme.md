@@ -28,14 +28,17 @@
 ## Run server 
 - Make sure you have an env.properties file with the environment variables
 ### `Build`
-- cd into api
+- cd into app
 - run mvn clean install
 ### `Run`
 - cd into api
 - run mvn spring-boot:run
+- cd into cli 
+- run mvn spring-boot:run
 ### `Test`
 - cd into api
 - run mvn test
+
 ### Postman for mock api calls
 - launch postman and import postman folder 
 
