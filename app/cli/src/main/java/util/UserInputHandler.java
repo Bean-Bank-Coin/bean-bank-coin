@@ -28,7 +28,7 @@ public class UserInputHandler {
             }
         }
 
-        return userInput;
+        return userInput.toUpperCase();
     }
 
     public static UserInputHandler getInstance() {
