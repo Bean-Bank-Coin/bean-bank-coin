@@ -7,6 +7,7 @@ import com.models.User;
 import request.UserRequest;
 import util.UserInputHandler;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -36,13 +37,14 @@ public class Session {
         final String LOG_IN_SIGN_UP_PROMPT = "Login (L) or Register (R) ";
         final String USERNAME_PROMPT = "Enter your username: ";
 
+        Console console = System.console();
         UserInputHandler inputHandler = UserInputHandler.getInstance();
         String userOption = inputHandler.handleUserInput(scanner, LOG_IN_SIGN_UP_PROMPT,
                 Arrays.asList("L", "R"));
 
         if (userOption.equals("L")) {
             String username = inputHandler.handleUserInput(scanner, USERNAME_PROMPT, Collections.emptyList());
-            String password = inputHandler.handleUserInput(scanner, "Enter your password: ", Collections.emptyList());
+            String password = new String(console.readPassword("Enter your password: "));
 
             Optional<User> userOptional = UserRequest.getInstance().getUser(username);
 
