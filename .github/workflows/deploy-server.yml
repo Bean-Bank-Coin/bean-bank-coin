@@ -35,6 +35,15 @@ jobs:
           cd api
           mvn clean install -DskipTests
 
+    - name: Update Dockerfile with env.properties
+      run: |
+          cd app
+          cd api
+          echo "DB_REMOTE_URL=jdbc:mysql://bean-bank-coin-db-mysql.cbsozziiwdya.eu-west-1.rds.amazonaws.com:3306/bean_bank_coin_schema" > env.properties
+          echo "DB_REMOTE_USER=admin" >> env.properties
+          echo "DB_REMOTE_PASSWORD=RXuf4ciWOi?(LhtHjqFU)mXFNKqy" >> env.properties
+          sed -i 's|EXPOSE 8080|COPY env.properties env.properties \nEXPOSE 8080|' Dockerfile
+
     - name: Login to docker hub
       run: |
           cd app
