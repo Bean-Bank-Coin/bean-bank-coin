@@ -1,12 +1,9 @@
 name: Publish package to GitHub Packages
 on:
-  # release:
-  #   types: [created]
-  #   branches:
-  #     - releases
-  pull_request:
-      branches:
-        - main
+  release:
+    types: [created]
+    branches:
+      - releases
 
 jobs:
   publish:
