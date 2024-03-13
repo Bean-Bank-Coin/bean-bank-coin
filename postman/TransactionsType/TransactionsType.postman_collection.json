@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "7fd5cb49-bb6a-445e-bc30-ae3fb032bbf9",
+		"_postman_id": "b10d6983-b30c-45e2-9833-5f98040d87d9",
 		"name": "TransactionsType",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "33495299"
@@ -8,6 +8,28 @@
 	"item": [
 		{
 			"name": "Get All Transaction Types",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Get All Transaction Types\", function () {\r",
+							"    pm.sendRequest({\r",
+							"        url: \"http://localhost:8080/api/transactionsType\",\r",
+							"        method: 'GET'\r",
+							"    }, \r",
+							"    \r",
+							"    function (err, response) {\r",
+							"        pm.expect(err).to.be.null;\r",
+							"        pm.expect(response).to.have.property('code', 200); \r",
+							"    });\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -28,6 +50,28 @@
 		},
 		{
 			"name": "Get Transaction Type by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Get Transaction Type by ID\", function () {\r",
+							"    pm.sendRequest({\r",
+							"        url: \"http://localhost:8080/api/transactionsType/1\",\r",
+							"        method: 'GET'\r",
+							"    }, \r",
+							"    \r",
+							"    function (err, response) {\r",
+							"        pm.expect(err).to.be.null;\r",
+							"        pm.expect(response).to.have.property('code', 200); \r",
+							"    });\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
