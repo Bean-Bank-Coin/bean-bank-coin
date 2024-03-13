@@ -4,9 +4,9 @@ on:
   #   types: [created]
   #   branches:
   #     - releases
-pull_request:
-    branches:
-      - main
+  pull_request:
+      branches:
+        - main
 
 jobs:
   publish:
