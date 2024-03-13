@@ -35,6 +35,15 @@ jobs:
           cd api
           mvn clean install -DskipTests
 
+    - name: Update Dockerfile with env.properties
+      run: |
+          cd app
+          cd api
+          echo "DB_REMOTE_URL=${{secrets.DB_REMOTE_URL}}" > env.properties
+          echo "DB_REMOTE_USER=${{secrets.DB_REMOTE_USER}}" >> env.properties
+          echo "DB_REMOTE_PASSWORD=${{secrets.DB_REMOTE_PASSWORD }}" >> env.properties
+          sed -i 's|EXPOSE 8080|COPY env.properties env.properties \nEXPOSE 8080|' Dockerfile
+
     - name: Login to docker hub
       run: |
           cd app
