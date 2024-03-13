@@ -1,14 +1,11 @@
 package session;
 
 import com.models.TransactionsType;
-import com.models.User;
 import request.Request;
 import request.RequestType;
-import request.UserRequest;
 
 import java.net.http.HttpResponse;
 import java.util.List;
-import java.util.Optional;
 import java.util.Scanner;
 
 public class SessionManager {
