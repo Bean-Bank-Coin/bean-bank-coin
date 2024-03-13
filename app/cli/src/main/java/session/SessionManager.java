@@ -14,7 +14,7 @@ public class SessionManager {
 
     private Request request;
 
-    public static final String EXIT_COMMAND = "exit";
+    public static final String EXIT_COMMAND = "-exit";
 
     public SessionManager() {
         request = new Request();
