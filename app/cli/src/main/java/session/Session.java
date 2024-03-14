@@ -134,7 +134,7 @@ public class Session {
             System.out.println(getHelpCommands("all"));
         } else if (userInput.equals(DASHBOARD_COMMAND)) {
             System.out.println("Dashboard");
-                getDashBoard(currUser.getUserID());
+            getDashBoard(currUser.getUserID());
         } else if (userInput.equals(CREATE_ACCOUNT_COMMAND)) {
             System.out.println("Create Account");
         } else if (userInput.equals(CLOSE_ACCOUNT_COMMAND)) {
@@ -162,6 +162,34 @@ public class Session {
         String account;
 
         String userInput = "";
+        List<Account> userAccounts = AccountRequest.getInstance().getAccounts(currUser.getUserID());
+        System.out.println("Your accounts are: \n------------------");
+
+        for (Account userAccount : userAccounts) {
+            System.out.println(
+                    "Account " + userAccount.getAccountID() + " has balance R" + userAccount.getBalanceAmount() + "\n");
+        }
+
+        System.out.println(ACCOUNT_PROMPT);
+        System.out.print(LINE_PROMPT + ENV_PROMPT);
+        userInput = scanner.nextLine();
+
+        while (!isWholeNumber(userInput)) {
+            if (userInput.equals(BACK_COMMAND)) {
+                return;
+            }
+
+            if (userInput.equals(HELP_COMMAND)) {
+                System.out.println(getHelpCommands("withdraw"));
+            } else {
+                System.out.println("Invalid account number. Try again or type -help for help");
+            }
+
+            System.out.print(LINE_PROMPT + ENV_PROMPT);
+            userInput = scanner.nextLine();
+        }
+
+        account = userInput;
 
         System.out.println(WITHDRAW_PROMPT);
         System.out.print(LINE_PROMPT + ENV_PROMPT);
@@ -188,33 +216,6 @@ public class Session {
 
         amount = userInput;
 
-        System.out.println(ACCOUNT_PROMPT);
-        System.out.print(LINE_PROMPT + ENV_PROMPT);
-        userInput = scanner.nextLine();
-
-        while (!isWholeNumber(userInput)) {
-            if (userInput.equals(BACK_COMMAND)) {
-                return;
-            }
-
-            if (userInput.equals(HELP_COMMAND)) {
-                System.out.println(getHelpCommands("withdraw"));
-            } else {
-                System.out.println("Invalid account number. Try again or type -help for help");
-            }
-
-            System.out.print(LINE_PROMPT + ENV_PROMPT);
-            userInput = scanner.nextLine();
-        }
-
-        List<Account> userAccounts = AccountRequest.getInstance().getAccounts(currUser.getUserID());
-
-        for (Account userAccount : userAccounts) {
-            System.out.println(userAccount.getAccountID());
-            System.out.println(userAccount.getBalanceAmount());
-        }
-
-        account = userInput;
         System.out.println(CONFIRMATION_PROMPT);
         return;
 
@@ -327,7 +328,7 @@ public class Session {
                 TRANSFER_COMMAND + "\n");
     }
 
-    public void getDashBoard(int userId){
+    public void getDashBoard(int userId) {
         AccountRequest dashDisplay = AccountRequest.getInstance();
         List<Account> accountList = dashDisplay.getAccounts(userId);
         if (!accountList.isEmpty()) {
@@ -338,9 +339,7 @@ public class Session {
                 System.out.println("Account Date:" + acc.getBalanceAmount());
                 System.out.println("Account Status:" + acc.getClosed());
             }
-        }
-        else
-        {
+        } else {
             System.out.println("No accounts to display.");
         }
     }
