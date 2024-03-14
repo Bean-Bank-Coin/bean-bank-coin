@@ -53,13 +53,12 @@ public class Account {
                 userID == account.userID &&
                 beanTypeID == account.beanTypeID &&
                 isClosed == account.isClosed &&
-                Objects.equals(balanceAmount, account.balanceAmount) &&
-                Objects.equals(dateCreated, account.dateCreated));
+                Objects.equals(balanceAmount, account.balanceAmount));
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(accountID, userID, beanTypeID, balanceAmount, dateCreated, isClosed);
+        return Objects.hash(accountID, userID, beanTypeID, balanceAmount, isClosed);
     }
 
     public int getAccountID() {

@@ -39,7 +39,6 @@ class AccountServiceTests{
             1, 
             1, 
             new BigDecimal(1500), 
-            new Date(), 
             false
         );
 
@@ -76,7 +75,6 @@ class AccountServiceTests{
             1, 
             1, 
             new BigDecimal(1500), 
-            new Date(), 
             false
         );
 
@@ -85,7 +83,6 @@ class AccountServiceTests{
             1, 
             1, 
             newBalance, 
-            new Date(), 
             false
         );
 
