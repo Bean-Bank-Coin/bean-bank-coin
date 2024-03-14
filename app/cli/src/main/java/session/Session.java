@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class Session {
     private User currentUser;
@@ -32,6 +33,7 @@ public class Session {
     private static final String DASHBOARD_COMMAND = "-dashboard";
     private static final String TRANSFER_COMMAND = "-transfer";
     private static final String DEPOSIT_COMMAND = "-deposit";
+    private static final String BACK_COMMAND = "-back";
     private static final String WITHDRAW_COMMAND = "-withdraw";
     private static final String CREATE_ACCOUNT_COMMAND = "-createAccount";
     private static final String CLOSE_ACCOUNT_COMMAND = "-closeAccount";
@@ -112,14 +114,8 @@ public class Session {
 
     public void navigator(User currUser, String userInput, Scanner scanner) {
 
-        // Console console = System.console();
-        // UserInputHandler inputHandler = UserInputHandler.getInstance();
-        // String userOption = inputHandler.handleUserInput(scanner,
-        // LOG_IN_SIGN_UP_PROMPT,
-        // Arrays.asList("L", "R"));
-
         if (userInput.equals(HELP_COMMAND)) {
-            System.out.println(getHelpCommands());
+            System.out.println(getHelpCommands("all"));
         } else if (userInput.equals(DASHBOARD_COMMAND)) {
             System.out.println("Dashboard");
         } else if (userInput.equals(CREATE_ACCOUNT_COMMAND)) {
@@ -129,7 +125,7 @@ public class Session {
         } else if (userInput.equals(DEPOSIT_COMMAND)) {
             System.out.println("Deposit");
         } else if (userInput.equals(WITHDRAW_COMMAND)) {
-            System.out.println("Withdraw");
+            withDraw(scanner, currUser);
         } else if (userInput.equals(TRANSFER_COMMAND)) {
             System.out.println("Transfer");
         } else if (userInput.equals(HOME_COMMAND)) {
@@ -139,12 +135,161 @@ public class Session {
         }
     }
 
+    public void withDraw(Scanner scanner, User currUser) {
+        final String WITHDRAW_PROMPT = "Enter the amount you would like to withdraw in Rands (R)";
+        final String ACCOUNT_PROMPT = "Enter the account you would like to withdraw from: ";
+        final String CONFIRMATION_PROMPT = "[Withdraw confirmed]\n[Taking you back to the home page]\n";
+        final String ENV_PROMPT = "Withdraw > ";
+        boolean amountEntered = false;
+        String amount;
+        String account;
+
+        String userInput = "";
+
+        System.out.println(WITHDRAW_PROMPT);
+        System.out.print(LINE_PROMPT + ENV_PROMPT);
+        userInput = scanner.nextLine();
+
+        if (userInput.equals(BACK_COMMAND)) {
+            System.out.println("[Navigating back to home page]");
+            return;
+        }
+
+        while (!isNumber(userInput)) {
+            if (userInput.equals(BACK_COMMAND)) {
+                return;
+            }
+            if (userInput.equals(HELP_COMMAND)) {
+                System.out.println(getHelpCommands("withdraw"));
+            } else {
+                System.out.println("Invalid amount. Try again or type -help for help");
+            }
+
+            System.out.print(LINE_PROMPT + ENV_PROMPT);
+            userInput = scanner.nextLine();
+        }
+
+        amount = userInput;
+
+        System.out.println(ACCOUNT_PROMPT);
+        System.out.print(LINE_PROMPT + ENV_PROMPT);
+        userInput = scanner.nextLine();
+
+        while (!isWholeNumber(userInput)) {
+            if (userInput.equals(BACK_COMMAND)) {
+                return;
+            }
+
+            if (userInput.equals(HELP_COMMAND)) {
+                System.out.println(getHelpCommands("withdraw"));
+            } else {
+                System.out.println("Invalid account number. Try again or type -help for help");
+            }
+
+            System.out.print(LINE_PROMPT + ENV_PROMPT);
+            userInput = scanner.nextLine();
+        }
+
+        account = userInput;
+        System.out.println(CONFIRMATION_PROMPT);
+        return;
+
+        // Function to withdraw
+
+    }
+
+    public static boolean isNumber(String input) {
+        String numberPattern = "-?\\d+(\\.\\d+)?";
+        Pattern pattern = Pattern.compile(numberPattern);
+        return pattern.matcher(input).matches();
+    }
+
+    public static boolean isWholeNumber(String input) {
+        String wholeNumberPattern = "-?\\d+";
+        Pattern pattern = Pattern.compile(wholeNumberPattern);
+        return pattern.matcher(input).matches();
+    }
+
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
     }
 
-    public String getHelpCommands() {
-        return "\nHere is a list of all available commands:\n" +
+    public String getHelpCommands(String option) {
+        if (option.equals("all")) {
+            return "\nHere is a list of all available commands:\n" +
+                    "----------------------------------------\n" +
+                    LOGOUT_COMMAND + "\n" +
+                    HELP_COMMAND + "\n" +
+                    DASHBOARD_COMMAND + "\n" +
+                    CREATE_ACCOUNT_COMMAND + "\n" +
+                    CLOSE_ACCOUNT_COMMAND + "\n" +
+                    DEPOSIT_COMMAND + "\n" +
+                    WITHDRAW_COMMAND + "\n" +
+                    SessionManager.EXIT_COMMAND + "\n" +
+                    BACK_COMMAND + "\n" +
+                    TRANSFER_COMMAND + "\n";
+        }
+
+        if (option.equals("withdraw")) {
+            return "\nHere is a list of all available commands:\n" +
+                    "----------------------------------------\n" +
+                    BACK_COMMAND + "\n" +
+                    HELP_COMMAND + "\n";
+        }
+
+        if (option.equals("deposit")) {
+            return "\nHere is a list of all available commands:\n" +
+                    "----------------------------------------\n" +
+                    BACK_COMMAND + "\n" +
+                    HELP_COMMAND + "\n";
+        }
+
+        if (option.equals("transfer")) {
+            return "\nHere is a list of all available commands:\n" +
+                    "----------------------------------------\n" +
+                    BACK_COMMAND + "\n" +
+                    HELP_COMMAND + "\n";
+        }
+
+        // if (option.equals("deposit")) {
+        // return "\nHere is a list of all available commands:\n" +
+        // "----------------------------------------\n" +
+        // BACK_COMMAND + "\n" +
+        // HELP_COMMAND + "\n" +
+        // DASHBOARD_COMMAND + "\n" +
+        // DEPOSIT_COMMAND + "\n" +
+        // SessionManager.EXIT_COMMAND;
+        // }
+
+        // if (option.equals("transfer")) {
+        // return "\nHere is a list of all available commands:\n" +
+        // "----------------------------------------\n" +
+        // BACK_COMMAND + "\n" +
+        // HELP_COMMAND + "\n" +
+        // DASHBOARD_COMMAND + "\n" +
+        // TRANSFER_COMMAND + "\n" +
+        // SessionManager.EXIT_COMMAND;
+        // }
+
+        // if (option.equals("create account")) {
+        // return "\nHere is a list of all available commands:\n" +
+        // "----------------------------------------\n" +
+        // BACK_COMMAND + "\n" +
+        // HELP_COMMAND + "\n" +
+        // DASHBOARD_COMMAND + "\n" +
+        // SessionManager.EXIT_COMMAND;
+        // }
+
+        // if (option.equals("close account")) {
+        // return "\nHere is a list of all available commands:\n" +
+        // "----------------------------------------\n" +
+        // BACK_COMMAND + "\n" +
+        // HELP_COMMAND + "\n" +
+        // DASHBOARD_COMMAND + "\n" +
+        // SessionManager.EXIT_COMMAND;
+        // }
+
+        return ("\nHere is a list of all available commands:\n" +
                 "----------------------------------------\n" +
                 LOGOUT_COMMAND + "\n" +
                 HELP_COMMAND + "\n" +
@@ -153,8 +298,8 @@ public class Session {
                 CLOSE_ACCOUNT_COMMAND + "\n" +
                 DEPOSIT_COMMAND + "\n" +
                 WITHDRAW_COMMAND + "\n" +
-                HELP_COMMAND + "\n" +
+                BACK_COMMAND + "\n" +
                 SessionManager.EXIT_COMMAND + "\n" +
-                TRANSFER_COMMAND;
+                TRANSFER_COMMAND + "\n");
     }
 }
