@@ -134,6 +134,7 @@ public class Session {
             System.out.println(getHelpCommands("all"));
         } else if (userInput.equals(DASHBOARD_COMMAND)) {
             System.out.println("Dashboard");
+                getDashBoard(currUser.getUserID());
         } else if (userInput.equals(CREATE_ACCOUNT_COMMAND)) {
             System.out.println("Create Account");
         } else if (userInput.equals(CLOSE_ACCOUNT_COMMAND)) {
@@ -325,4 +326,23 @@ public class Session {
                 SessionManager.EXIT_COMMAND + "\n" +
                 TRANSFER_COMMAND + "\n");
     }
+
+    public void getDashBoard(int userId){
+        AccountRequest dashDisplay = AccountRequest.getInstance();
+        List<Account> accountList = dashDisplay.getAccounts(userId);
+        if (!accountList.isEmpty()) {
+            for (Account acc : accountList) {
+                System.out.println("Account details:Account ID:" + acc.getAccountID());
+                System.out.println("Account Bean Type ID:" + acc.getBeanTypeID());
+                System.out.println("Account Balance Amount:" + acc.getBalanceAmount());
+                System.out.println("Account Date:" + acc.getBalanceAmount());
+                System.out.println("Account Status:" + acc.getClosed());
+            }
+        }
+        else
+        {
+            System.out.println("No accounts to display.");
+        }
+    }
+
 }
