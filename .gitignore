@@ -3,8 +3,6 @@ SQL/.vs/SQL/v15/.ssms_suo
 
 flywaylocal.conf
 
-api
-
 releases
 
 env.properties
