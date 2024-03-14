@@ -10,7 +10,6 @@ import java.util.Date;
 @Table(name = "Account")
 @NoArgsConstructor
 public class Account {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "AccountID")
@@ -32,18 +31,15 @@ public class Account {
     private Boolean isClosed;
 
     public Account(
-        int accountID, 
-        int userID, 
-        int beanTypeID, 
-        BigDecimal balanceAmount, 
-        Date dateCreated, 
-        Boolean isClosed
-    ){
+            int accountID,
+            int userID,
+            int beanTypeID,
+            BigDecimal balanceAmount,
+            Boolean isClosed) {
         this.accountID = accountID;
         this.userID = userID;
         this.beanTypeID = beanTypeID;
         this.balanceAmount = balanceAmount;
-        this.dateCreated = dateCreated;
         this.isClosed = isClosed;
     }
 
