@@ -76,25 +76,25 @@ public class AccountRequest {
     }
 
     public boolean closeAccount(int userID, int accountID) {
-        Request request = new Request();
-        HttpResponse<String> response = request.makeRequest("accounts/" + String.valueOf(userID), RequestType.GET,
-                null);
+        // Request request = new Request();
+        // HttpResponse<String> response = request.makeRequest("accounts/" +
+        // String.valueOf(userID), RequestType.GET,
+        // null);
 
-        System.out.println(response.body());
+        // System.out.println(response.body());
 
-        JSONArray userAccountsJson = new JSONArray(response.body());
-        List<Account> userAccounts = new ArrayList<>();
-        for (int i = 0; i < userAccountsJson.length(); i++) {
-            JSONObject accountJson = userAccountsJson.getJSONObject(i);
-            boolean isClosed = accountJson.getBoolean("isClosed");
-            if (userAccounts.contains(accountJson.getInt("accountID"))) {
-                isClosed = false;
-                return false;
-            } else {
-                return true;
-            }
-        }
+        // JSONArray userAccountsJson = new JSONArray(response.body());
+        // List<Account> userAccounts = new ArrayList<>();
+        // for (int i = 0; i < userAccountsJson.length(); i++) {
+        // JSONObject accountJson = userAccountsJson.getJSONObject(i);
+        // boolean isClosed = accountJson.getBoolean("isClosed");
+        // if (userAccounts.contains(accountJson.getInt("accountID"))) {
+        // isClosed = false;
+        // return false;
+        // } else {
+        // return true;
+        // }
+        // }
         return false;
-
     }
 }

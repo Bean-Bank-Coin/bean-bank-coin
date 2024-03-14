@@ -137,10 +137,8 @@ public class Session {
         } else if (userInput.equals(DASHBOARD_COMMAND)) {
             getDashBoard(currUser.getUserID());
         } else if (userInput.equals(CREATE_ACCOUNT_COMMAND)) {
-            System.out.println("Create Account");
             createAccount(currUser.getUserID());
         } else if (userInput.equals(CLOSE_ACCOUNT_COMMAND)) {
-            System.out.println("Close Account");
             closeAccount(currUser.getUserID());
         } else if (userInput.equals(DEPOSIT_COMMAND)) {
             deposit(scanner, currUser);
@@ -149,7 +147,6 @@ public class Session {
         } else if (userInput.equals(TRANSFER_COMMAND)) {
             transfer(scanner, currUser);
         } else if (userInput.equals(HOME_COMMAND)) {
-            System.out.println("Home");
         } else {
             System.out.println("Invalid command. Type -help for a list of commands.");
         }
