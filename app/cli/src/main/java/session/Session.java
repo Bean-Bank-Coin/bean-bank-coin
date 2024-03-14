@@ -332,11 +332,13 @@ public class Session {
         List<Account> accountList = dashDisplay.getAccounts(userId);
         if (!accountList.isEmpty()) {
             for (Account acc : accountList) {
-                System.out.println("Account details:Account ID:" + acc.getAccountID());
-                System.out.println("Account Bean Type ID:" + acc.getBeanTypeID());
-                System.out.println("Account Balance Amount:" + acc.getBalanceAmount());
-                System.out.println("Account Date:" + acc.getBalanceAmount());
-                System.out.println("Account Status:" + acc.getClosed());
+                if(!acc.getClosed())
+                {
+                    System.out.print("Account " + acc.getAccountID() + " details: \n---------------------\n");
+                    System.out.print("ID:" + acc.getAccountID());
+                    System.out.print(", Bean Type ID:" + acc.getBeanTypeID());
+                    System.out.print(", Balance Amount:" + acc.getBalanceAmount());
+                }
             }
         }
         else
