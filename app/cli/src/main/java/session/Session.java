@@ -537,9 +537,9 @@ public class Session {
             for (Account acc : accountList) {
                 if (!acc.getClosed()) {
                     System.out.print("\nAccount " + acc.getAccountID() + " details: \n---------------------\n");
-                    System.out.print(", Bean Type: " + getBeanName(acc.getBeanTypeID()));
+                    System.out.print("Bean Type: " + getBeanName(acc.getBeanTypeID()));
                     System.out.print(
-                            ", Balance Amount:" + "R" + convertToRands(acc.getBalanceAmount(), acc.getBeanTypeID())
+                            ", Balance Amount: " + "R" + convertToRands(acc.getBalanceAmount(), acc.getBeanTypeID())
                                     + "\n");
                 }
             }
