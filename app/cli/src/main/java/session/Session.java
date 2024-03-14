@@ -141,16 +141,138 @@ public class Session {
         } else if (userInput.equals(CLOSE_ACCOUNT_COMMAND)) {
             System.out.println("Close Account");
         } else if (userInput.equals(DEPOSIT_COMMAND)) {
-            System.out.println("Deposit");
+            deposit(scanner, currUser);
         } else if (userInput.equals(WITHDRAW_COMMAND)) {
             withDraw(scanner, currUser);
         } else if (userInput.equals(TRANSFER_COMMAND)) {
-            System.out.println("Transfer");
+            transfer(scanner, currUser);
         } else if (userInput.equals(HOME_COMMAND)) {
             System.out.println("Home");
         } else {
             System.out.println("Invalid command. Type -help for a list of commands.");
         }
+    }
+
+    public void transfer(Scanner scanner, User currUser) {
+        final String TRANSFER_PROMPT = "Enter the amount you would like to transfer in Rands (R)";
+        final String ACCOUNT_PROMPT = "Enter the account you would like to transfer from: ";
+        final String RECIEVER_ACCOUNT_PROMPT = "Enter the account you would like to transfer to: ";
+
+        final String CONFIRMATION_PROMPT = "[Transfer confirmed]\n[Taking you back to the home page]\n";
+        final String ENV_PROMPT = "Transfer > ";
+        boolean amountEntered = false;
+        BigDecimal amount;
+        String account;
+        BigDecimal currBalance = new BigDecimal(0);
+        boolean accountValid = false;
+        boolean ammountValid = false;
+
+        String userInput = "";
+        List<Account> userAccounts = AccountRequest.getInstance().getAccounts(currUser.getUserID());
+        System.out.println("Your accounts are: \n------------------");
+
+        for (Account userAccount : userAccounts) {
+            System.out.println(
+                    "Account " + userAccount.getAccountID() + " has balance R"
+                            + convertToRands(userAccount.getBalanceAmount(), userAccount.getBeanTypeID()));
+        }
+
+        System.out.println();
+        System.out.println(ACCOUNT_PROMPT);
+
+        while (!isWholeNumber(userInput) || !accountValid) {
+
+            System.out.print(LINE_PROMPT + ENV_PROMPT);
+            userInput = scanner.nextLine();
+
+            if (isWholeNumber(userInput)) {
+                for (Account userAccount : userAccounts) {
+                    if (userAccount.getAccountID() == Integer.parseInt(userInput)) {
+                        accountValid = true;
+                        break;
+                    }
+                }
+            }
+
+            if (userInput.equals(BACK_COMMAND)) {
+                return;
+            }
+
+            if (userInput.equals(HELP_COMMAND)) {
+                System.out.println(getHelpCommands("transfer"));
+            } else if (!accountValid) {
+                System.out.println("Invalid account number. Try again or type -help for help");
+            }
+
+        }
+
+        account = userInput;
+
+        System.out.println(TRANSFER_PROMPT);
+
+        while (!isNumber(userInput) || !ammountValid) {
+
+            System.out.print(LINE_PROMPT + ENV_PROMPT);
+            userInput = scanner.nextLine();
+
+            if (isNumber(userInput)) {
+                BigDecimal inputAmount = new BigDecimal(userInput);
+                for (Account userAccount : userAccounts) {
+                    if (convertToRands(userAccount.getBalanceAmount(), userAccount.getBeanTypeID())
+                            .compareTo(inputAmount) >= 0
+                            && userAccount.getAccountID() == Integer.parseInt(account)) {
+
+                        currBalance = convertToRands(userAccount.getBalanceAmount(), userAccount.getBeanTypeID());
+                        ammountValid = true;
+                        break;
+                    }
+                }
+            }
+
+            if (userInput.equals(BACK_COMMAND)) {
+                return;
+            }
+            if (userInput.equals(HELP_COMMAND)) {
+                System.out.println(getHelpCommands("transfer"));
+            } else if (!ammountValid) {
+                System.out.println("Invalid amount. Try again or type -help for help");
+            }
+
+        }
+
+        amount = new BigDecimal(userInput);
+
+        System.out.println();
+        System.out.println(RECIEVER_ACCOUNT_PROMPT);
+
+        accountValid = false;
+
+        while (!isWholeNumber(userInput) || !accountValid) {
+
+            System.out.print(LINE_PROMPT + ENV_PROMPT);
+            userInput = scanner.nextLine();
+
+            if (isWholeNumber(userInput)) {
+                accountValid = true;
+            }
+
+            if (userInput.equals(BACK_COMMAND)) {
+                return;
+            }
+
+            if (userInput.equals(HELP_COMMAND)) {
+                System.out.println(getHelpCommands("transfer"));
+            } else if (!accountValid) {
+                System.out.println("Invalid account number. Try again or type -help for help");
+            }
+        }
+
+        String recieverAccount = userInput;
+
+        TransactionRequest.getInstance().transfer(amount, Integer.parseInt(account), Integer.parseInt(recieverAccount));
+        System.out.println(CONFIRMATION_PROMPT);
+        return;
+
     }
 
     public void withDraw(Scanner scanner, User currUser) {
@@ -171,7 +293,8 @@ public class Session {
 
         for (Account userAccount : userAccounts) {
             System.out.println(
-                    "Account " + userAccount.getAccountID() + " has balance R" + userAccount.getBalanceAmount());
+                    "Account " + userAccount.getAccountID() + " has balance R"
+                            + convertToRands(userAccount.getBalanceAmount(), userAccount.getBeanTypeID()));
         }
 
         System.out.println();
@@ -215,10 +338,11 @@ public class Session {
             if (isNumber(userInput)) {
                 BigDecimal inputAmount = new BigDecimal(userInput);
                 for (Account userAccount : userAccounts) {
-                    if (userAccount.getBalanceAmount().compareTo(inputAmount) >= 0
+                    if (convertToRands(userAccount.getBalanceAmount(), userAccount.getBeanTypeID())
+                            .compareTo(inputAmount) >= 0
                             && userAccount.getAccountID() == Integer.parseInt(account)) {
 
-                        currBalance = userAccount.getBalanceAmount();
+                        currBalance = convertToRands(userAccount.getBalanceAmount(), userAccount.getBeanTypeID());
                         ammountValid = true;
                         break;
                     }
@@ -237,9 +361,89 @@ public class Session {
         }
 
         amount = new BigDecimal(userInput);
+        TransactionRequest.getInstance().withDraw(amount, Integer.parseInt(account));
+        System.out.println(CONFIRMATION_PROMPT);
+        return;
 
-        BigDecimal newBalance = currBalance.subtract(amount);
-        TransactionRequest.getInstance().withDraw(newBalance, Integer.parseInt(account));
+    }
+
+    public void deposit(Scanner scanner, User currUser) {
+        final String DEPOSIT_PROMPT = "Enter the amount you would like to deposit in Rands (R)";
+        final String ACCOUNT_PROMPT = "Enter the account you would like to deposit to: ";
+        final String CONFIRMATION_PROMPT = "[Deposit confirmed]\n[Taking you back to the home page]\n";
+        final String ENV_PROMPT = "Deposit > ";
+        boolean amountEntered = false;
+        BigDecimal amount;
+        String account;
+        BigDecimal currBalance = new BigDecimal(0);
+        boolean accountValid = false;
+        boolean ammountValid = false;
+
+        String userInput = "";
+        List<Account> userAccounts = AccountRequest.getInstance().getAccounts(currUser.getUserID());
+        System.out.println("Your accounts are: \n------------------");
+
+        for (Account userAccount : userAccounts) {
+            System.out.println(
+                    "Account " + userAccount.getAccountID() + " has balance R"
+                            + convertToRands(userAccount.getBalanceAmount(), userAccount.getBeanTypeID()));
+        }
+
+        System.out.println();
+        System.out.println(ACCOUNT_PROMPT);
+
+        while (!isWholeNumber(userInput) || !accountValid) {
+
+            System.out.print(LINE_PROMPT + ENV_PROMPT);
+            userInput = scanner.nextLine();
+
+            if (isWholeNumber(userInput)) {
+                for (Account userAccount : userAccounts) {
+                    if (userAccount.getAccountID() == Integer.parseInt(userInput)) {
+                        accountValid = true;
+                        break;
+                    }
+                }
+            }
+
+            if (userInput.equals(BACK_COMMAND)) {
+                return;
+            }
+
+            if (userInput.equals(HELP_COMMAND)) {
+                System.out.println(getHelpCommands("deposit"));
+            } else if (!accountValid) {
+                System.out.println("Invalid account number. Try again or type -help for help");
+            }
+
+        }
+
+        account = userInput;
+
+        System.out.println(DEPOSIT_PROMPT);
+
+        while (!isNumber(userInput) || !ammountValid) {
+
+            System.out.print(LINE_PROMPT + ENV_PROMPT);
+            userInput = scanner.nextLine();
+
+            if (isNumber(userInput)) {
+                ammountValid = true;
+            }
+
+            if (userInput.equals(BACK_COMMAND)) {
+                return;
+            }
+            if (userInput.equals(HELP_COMMAND)) {
+                System.out.println(getHelpCommands("deposit"));
+            } else if (!ammountValid) {
+                System.out.println("Invalid amount. Try again or type -help for help");
+            }
+        }
+
+        amount = new BigDecimal(userInput);
+
+        TransactionRequest.getInstance().deposit(amount, Integer.parseInt(account));
         System.out.println(CONFIRMATION_PROMPT);
         return;
 
@@ -298,43 +502,19 @@ public class Session {
                     HELP_COMMAND + "\n";
         }
 
-        // if (option.equals("deposit")) {
-        // return "\nHere is a list of all available commands:\n" +
-        // "----------------------------------------\n" +
-        // BACK_COMMAND + "\n" +
-        // HELP_COMMAND + "\n" +
-        // DASHBOARD_COMMAND + "\n" +
-        // DEPOSIT_COMMAND + "\n" +
-        // SessionManager.EXIT_COMMAND;
-        // }
+        if (option.equals("create account")) {
+            return "\nHere is a list of all available commands:\n" +
+                    "----------------------------------------\n" +
+                    BACK_COMMAND + "\n" +
+                    HELP_COMMAND + "\n";
+        }
 
-        // if (option.equals("transfer")) {
-        // return "\nHere is a list of all available commands:\n" +
-        // "----------------------------------------\n" +
-        // BACK_COMMAND + "\n" +
-        // HELP_COMMAND + "\n" +
-        // DASHBOARD_COMMAND + "\n" +
-        // TRANSFER_COMMAND + "\n" +
-        // SessionManager.EXIT_COMMAND;
-        // }
-
-        // if (option.equals("create account")) {
-        // return "\nHere is a list of all available commands:\n" +
-        // "----------------------------------------\n" +
-        // BACK_COMMAND + "\n" +
-        // HELP_COMMAND + "\n" +
-        // DASHBOARD_COMMAND + "\n" +
-        // SessionManager.EXIT_COMMAND;
-        // }
-
-        // if (option.equals("close account")) {
-        // return "\nHere is a list of all available commands:\n" +
-        // "----------------------------------------\n" +
-        // BACK_COMMAND + "\n" +
-        // HELP_COMMAND + "\n" +
-        // DASHBOARD_COMMAND + "\n" +
-        // SessionManager.EXIT_COMMAND;
-        // }
+        if (option.equals("delete account")) {
+            return "\nHere is a list of all available commands:\n" +
+                    "----------------------------------------\n" +
+                    BACK_COMMAND + "\n" +
+                    HELP_COMMAND + "\n";
+        }
 
         return ("\nHere is a list of all available commands:\n" +
                 "----------------------------------------\n" +
@@ -357,13 +537,69 @@ public class Session {
             for (Account acc : accountList) {
                 if (!acc.getClosed()) {
                     System.out.print("\nAccount " + acc.getAccountID() + " details: \n---------------------\n");
-                    System.out.print("ID:" + acc.getAccountID());
-                    System.out.print(", Bean Type ID:" + acc.getBeanTypeID());
-                    System.out.print(", Balance Amount:" + acc.getBalanceAmount() + "\n");
+                    System.out.print("Bean Type: " + getBeanName(acc.getBeanTypeID()));
+                    System.out.print(
+                            ", Balance Amount: " + "R" + convertToRands(acc.getBalanceAmount(), acc.getBeanTypeID())
+                                    + "\n");
                 }
             }
         } else {
             System.out.println("No accounts to display.");
+        }
+    }
+
+    public static BigDecimal convertToRands(BigDecimal amount, int beanTypeID) {
+        BigDecimal valueInRands = getValueInRands(beanTypeID);
+        if (valueInRands == null) {
+            System.out.println("Invalid beanTypeID");
+            return BigDecimal.ZERO;
+        }
+        return amount.multiply(valueInRands);
+    }
+
+    private static BigDecimal getValueInRands(int beanTypeID) {
+        switch (beanTypeID) {
+            case 1:
+                return new BigDecimal("5.00");
+            case 2:
+                return new BigDecimal("10.00");
+            case 3:
+                return new BigDecimal("15.00");
+            case 4:
+                return new BigDecimal("20.00");
+            case 5:
+                return new BigDecimal("25.00");
+            case 6:
+                return new BigDecimal("30.00");
+            case 7:
+                return new BigDecimal("35.00");
+            case 8:
+                return new BigDecimal("40.00");
+            default:
+                return null;
+        }
+    }
+
+    public static String getBeanName(int beanTypeID) {
+        switch (beanTypeID) {
+            case 1:
+                return "Green Bean";
+            case 2:
+                return "Blue Bean";
+            case 3:
+                return "Purple Bean";
+            case 4:
+                return "Orange Bean";
+            case 5:
+                return "Red Bean";
+            case 6:
+                return "Yellow Bean";
+            case 7:
+                return "Silver Bean";
+            case 8:
+                return "Gold Bean";
+            default:
+                return "Bean not found";
         }
     }
 

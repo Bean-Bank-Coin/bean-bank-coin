@@ -10,8 +10,6 @@ import java.util.Scanner;
 
 public class SessionManager {
 
-    private List<TransactionsType> transactionsTypes;
-
     private Request request;
 
     public static final String EXIT_COMMAND = "-exit";
