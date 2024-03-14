@@ -1,6 +1,7 @@
 package session;
 
 import java.io.Console;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
@@ -160,6 +161,8 @@ public class Session {
         boolean amountEntered = false;
         String amount;
         String account;
+        boolean accountValid = false;
+        boolean ammountValid = false;
 
         String userInput = "";
         List<Account> userAccounts = AccountRequest.getInstance().getAccounts(currUser.getUserID());
@@ -167,51 +170,64 @@ public class Session {
 
         for (Account userAccount : userAccounts) {
             System.out.println(
-                    "Account " + userAccount.getAccountID() + " has balance R" + userAccount.getBalanceAmount() + "\n");
+                    "Account " + userAccount.getAccountID() + " has balance R" + userAccount.getBalanceAmount());
         }
 
+        System.out.println();
         System.out.println(ACCOUNT_PROMPT);
-        System.out.print(LINE_PROMPT + ENV_PROMPT);
-        userInput = scanner.nextLine();
 
-        while (!isWholeNumber(userInput)) {
+        while (!isWholeNumber(userInput) || !accountValid) {
+
+            if (isWholeNumber(userInput)) {
+                for (Account userAccount : userAccounts) {
+                    if (userAccount.getAccountID() == Integer.parseInt(userInput)) {
+                        accountValid = true;
+                        break;
+                    }
+                }
+            }
+
             if (userInput.equals(BACK_COMMAND)) {
                 return;
             }
 
             if (userInput.equals(HELP_COMMAND)) {
                 System.out.println(getHelpCommands("withdraw"));
-            } else {
+            } else if (!accountValid) {
                 System.out.println("Invalid account number. Try again or type -help for help");
             }
 
-            System.out.print(LINE_PROMPT + ENV_PROMPT);
-            userInput = scanner.nextLine();
         }
 
         account = userInput;
 
         System.out.println(WITHDRAW_PROMPT);
-        System.out.print(LINE_PROMPT + ENV_PROMPT);
-        userInput = scanner.nextLine();
 
-        if (userInput.equals(BACK_COMMAND)) {
-            System.out.println("[Navigating back to home page]");
-            return;
-        }
+        while (!isNumber(userInput) || !ammountValid) {
 
-        while (!isNumber(userInput)) {
+            System.out.print(LINE_PROMPT + ENV_PROMPT);
+            userInput = scanner.nextLine();
+
+            if (isNumber(userInput)) {
+                BigDecimal inputAmount = new BigDecimal(userInput);
+                for (Account userAccount : userAccounts) {
+                    if (userAccount.getBalanceAmount().compareTo(inputAmount) >= 0
+                            && userAccount.getAccountID() == Integer.parseInt(account)) {
+                        ammountValid = true;
+                        break;
+                    }
+                }
+            }
+
             if (userInput.equals(BACK_COMMAND)) {
                 return;
             }
             if (userInput.equals(HELP_COMMAND)) {
                 System.out.println(getHelpCommands("withdraw"));
-            } else {
+            } else if (!ammountValid) {
                 System.out.println("Invalid amount. Try again or type -help for help");
             }
 
-            System.out.print(LINE_PROMPT + ENV_PROMPT);
-            userInput = scanner.nextLine();
         }
 
         amount = userInput;
@@ -333,12 +349,11 @@ public class Session {
         List<Account> accountList = dashDisplay.getAccounts(userId);
         if (!accountList.isEmpty()) {
             for (Account acc : accountList) {
-                if(!acc.getClosed())
-                {
+                if (!acc.getClosed()) {
                     System.out.print("Account " + acc.getAccountID() + " details: \n---------------------\n");
                     System.out.print("ID:" + acc.getAccountID());
                     System.out.print(", Bean Type ID:" + acc.getBeanTypeID());
-                    System.out.print(", Balance Amount:" + acc.getBalanceAmount());
+                    System.out.print(", Balance Amount:" + acc.getBalanceAmount() + "\n");
                 }
             }
         } else {
