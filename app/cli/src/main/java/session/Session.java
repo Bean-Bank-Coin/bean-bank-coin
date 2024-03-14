@@ -48,9 +48,9 @@ public class Session {
         Console console = System.console();
         UserInputHandler inputHandler = UserInputHandler.getInstance();
         String userOption = inputHandler.handleUserInput(scanner, LOG_IN_SIGN_UP_PROMPT,
-                Arrays.asList("L", "R"));
+                Arrays.asList("l", "r"));
 
-        if (userOption.equals("L")) {
+        if (userOption.equalsIgnoreCase("l")) {
             String username = inputHandler.handleUserInput(scanner, USERNAME_PROMPT, Collections.emptyList());
             String password = new String(console.readPassword("Enter a password: "));
 
@@ -93,37 +93,14 @@ public class Session {
         }
 
         System.out.println(WELCOME_USER_PROMPT_START + currUser.getUsername() + WELCOME_USER_PROMPT_END);
-
         System.out.print(LINE_PROMPT);
         String userInput = scanner.nextLine();
 
         while (!userInput.equals(LOGOUT_COMMAND) && !userInput.equals(SessionManager.EXIT_COMMAND)) {
 
-            // Each if will call a seperate funtion like logout and login
-
-            if (userInput.equals(HELP_COMMAND)) {
-                System.out.println(getHelpCommands());
-            } else if (userInput.equals(DASHBOARD_COMMAND)) {
-                System.out.println("Dashboard");
-            } else if (userInput.equals(CREATE_ACCOUNT_COMMAND)) {
-                System.out.println("Create Account");
-            } else if (userInput.equals(CLOSE_ACCOUNT_COMMAND)) {
-                System.out.println("Close Account");
-            } else if (userInput.equals(DEPOSIT_COMMAND)) {
-                System.out.println("Deposit");
-            } else if (userInput.equals(WITHDRAW_COMMAND)) {
-                System.out.println("Withdraw");
-            } else if (userInput.equals(TRANSFER_COMMAND)) {
-                System.out.println("Transfer");
-            } else if (userInput.equals(HOME_COMMAND)) {
-                System.out.println("Home");
-            } else {
-                System.out.println("Invalid command. Type -help for a list of commands.");
-            }
-
+            navigator(currUser, userInput, scanner);
             System.out.print(LINE_PROMPT);
             userInput = scanner.nextLine();
-
         }
 
         if (userInput.equals(LOGOUT_COMMAND)) {
@@ -131,6 +108,35 @@ public class Session {
         }
 
         return SessionManager.EXIT_COMMAND;
+    }
+
+    public void navigator(User currUser, String userInput, Scanner scanner) {
+
+        // Console console = System.console();
+        // UserInputHandler inputHandler = UserInputHandler.getInstance();
+        // String userOption = inputHandler.handleUserInput(scanner,
+        // LOG_IN_SIGN_UP_PROMPT,
+        // Arrays.asList("L", "R"));
+
+        if (userInput.equals(HELP_COMMAND)) {
+            System.out.println(getHelpCommands());
+        } else if (userInput.equals(DASHBOARD_COMMAND)) {
+            System.out.println("Dashboard");
+        } else if (userInput.equals(CREATE_ACCOUNT_COMMAND)) {
+            System.out.println("Create Account");
+        } else if (userInput.equals(CLOSE_ACCOUNT_COMMAND)) {
+            System.out.println("Close Account");
+        } else if (userInput.equals(DEPOSIT_COMMAND)) {
+            System.out.println("Deposit");
+        } else if (userInput.equals(WITHDRAW_COMMAND)) {
+            System.out.println("Withdraw");
+        } else if (userInput.equals(TRANSFER_COMMAND)) {
+            System.out.println("Transfer");
+        } else if (userInput.equals(HOME_COMMAND)) {
+            System.out.println("Home");
+        } else {
+            System.out.println("Invalid command. Type -help for a list of commands.");
+        }
     }
 
     public void setCurrentUser(User currentUser) {
