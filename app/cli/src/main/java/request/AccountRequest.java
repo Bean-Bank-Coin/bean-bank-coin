@@ -1,5 +1,6 @@
 package request;
 
+import java.math.BigDecimal;
 import java.net.http.HttpResponse;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -48,6 +49,30 @@ public class AccountRequest {
         return userAccounts;
     }
 
+   public Optional<Account> createAccount(int userID, int beanTypeID, BigDecimal balanceAmount, boolean isClosed) {
+        JSONObject payload = new JSONObject();
+        payload.put("userID", userID);
+        payload.put("beanTypeID", beanTypeID);
+        payload.put("balanceAmount", balanceAmount);
+        payload.put("isClosed", isClosed);
+
+
+        Request request = new Request();
+        HttpResponse<String> response = request.makeRequest("account", RequestType.POST, Optional.of(payload));
+
+        if (response.body().equals(""))
+            return Optional.empty();
+
+        JSONObject createAccountObject = new JSONObject(response.body());
+
+        return Optional.of(new Account(
+            createAccountObject.getInt("accountID"),
+            createAccountObject.getInt("userID"),
+            createAccountObject.getInt("beanTypeID"),
+            createAccountObject.getBigDecimal("balanceAmount"),
+            createAccountObject.getBoolean("isClosed")));
+    }
+
     private AccountRequest() {
     }
 
@@ -59,4 +84,29 @@ public class AccountRequest {
         return accountRequest;
     }
 
+    public boolean closeAccount(int userID, int accountID)
+    {
+        Request request = new Request();
+        HttpResponse<String> response = request.makeRequest("accounts/" + String.valueOf(userID), RequestType.GET,
+                null);
+
+        System.out.println(response.body());
+
+        JSONArray userAccountsJson = new JSONArray(response.body());
+        List<Account> userAccounts = new ArrayList<>();
+        for (int i = 0; i < userAccountsJson.length(); i++) {
+            JSONObject accountJson = userAccountsJson.getJSONObject(i);
+            boolean isClosed = accountJson.getBoolean("isClosed");
+            if(userAccounts.contains(accountJson.getInt("accountID")))
+            {
+                isClosed = false;
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+    }
+
+    }
 }
