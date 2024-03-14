@@ -537,8 +537,7 @@ public class Session {
             for (Account acc : accountList) {
                 if (!acc.getClosed()) {
                     System.out.print("\nAccount " + acc.getAccountID() + " details: \n---------------------\n");
-                    System.out.print("ID:" + acc.getAccountID());
-                    System.out.print(", Bean Type ID:" + acc.getBeanTypeID());
+                    System.out.print(", Bean Type: " + getBeanName(acc.getBeanTypeID()));
                     System.out.print(
                             ", Balance Amount:" + "R" + convertToRands(acc.getBalanceAmount(), acc.getBeanTypeID())
                                     + "\n");
@@ -578,6 +577,29 @@ public class Session {
                 return new BigDecimal("40.00");
             default:
                 return null;
+        }
+    }
+
+    public static String getBeanName(int beanTypeID) {
+        switch (beanTypeID) {
+            case 1:
+                return "Green Bean";
+            case 2:
+                return "Blue Bean";
+            case 3:
+                return "Purple Bean";
+            case 4:
+                return "Orange Bean";
+            case 5:
+                return "Red Bean";
+            case 6:
+                return "Yellow Bean";
+            case 7:
+                return "Silver Bean";
+            case 8:
+                return "Gold Bean";
+            default:
+                return "Bean not found";
         }
     }
 
