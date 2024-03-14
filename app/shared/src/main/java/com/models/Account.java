@@ -32,11 +32,11 @@ public class Account {
     private Boolean isClosed;
 
     public Account(
-        int accountID,
-        int userID,
-        int beanTypeID,
-        BigDecimal balanceAmount,
-        Date dateCreated,
+        int accountID, 
+        int userID, 
+        int beanTypeID, 
+        BigDecimal balanceAmount, 
+        Date dateCreated, 
         Boolean isClosed
     ){
         this.accountID = accountID;
