@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.net.http.HttpResponse;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -48,28 +49,19 @@ public class AccountRequest {
         return userAccounts;
     }
 
-   public Optional<Account> createAccount(int userID, int beanTypeID, BigDecimal balanceAmount, boolean isClosed) {
+    public void createAccount(int userID, int beanTypeID, BigDecimal balanceAmount, boolean isClosed) {
         JSONObject payload = new JSONObject();
         payload.put("userID", userID);
         payload.put("beanTypeID", beanTypeID);
         payload.put("balanceAmount", balanceAmount);
-        payload.put("isClosed", isClosed);
-
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        String formattedDateTime = currentDateTime.format(formatter);
+        payload.put("dateCreated", formattedDateTime);
+        payload.put("closed", false);
 
         Request request = new Request();
-        HttpResponse<String> response = request.makeRequest("account", RequestType.POST, Optional.of(payload));
-
-        if (response.body().equals(""))
-            return Optional.empty();
-
-        JSONObject createAccountObject = new JSONObject(response.body());
-
-        return Optional.of(new Account(
-            createAccountObject.getInt("accountID"),
-            createAccountObject.getInt("userID"),
-            createAccountObject.getInt("beanTypeID"),
-            createAccountObject.getBigDecimal("balanceAmount"),
-            createAccountObject.getBoolean("isClosed")));
+        HttpResponse<String> response = request.makeRequest("accounts", RequestType.POST, Optional.of(payload));
     }
 
     private AccountRequest() {
@@ -83,8 +75,7 @@ public class AccountRequest {
         return accountRequest;
     }
 
-    public boolean closeAccount(int userID, int accountID)
-    {
+    public boolean closeAccount(int userID, int accountID) {
         Request request = new Request();
         HttpResponse<String> response = request.makeRequest("accounts/" + String.valueOf(userID), RequestType.GET,
                 null);
@@ -96,16 +87,14 @@ public class AccountRequest {
         for (int i = 0; i < userAccountsJson.length(); i++) {
             JSONObject accountJson = userAccountsJson.getJSONObject(i);
             boolean isClosed = accountJson.getBoolean("isClosed");
-            if(userAccounts.contains(accountJson.getInt("accountID")))
-            {
+            if (userAccounts.contains(accountJson.getInt("accountID"))) {
                 isClosed = false;
                 return false;
-            }
-            else
-            {
+            } else {
                 return true;
             }
-    }
+        }
+        return false;
 
     }
 }
