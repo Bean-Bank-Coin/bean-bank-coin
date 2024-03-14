@@ -169,13 +169,14 @@ public class Session {
                 TRANSFER_COMMAND;
     }
     public void getDashBoard(int userId){
-        DashboardRequest dashDisplay = new DashboardRequest();
+        DashboardRequest dashDisplay = DashboardRequest.getInstance();
         List<Account> accountList = dashDisplay.getAccounts(userId);
         if (!accountList.isEmpty()) {
             for (Account acc : accountList) {
                 System.out.println("Account details:Account ID:" + acc.getAccountID());
                 System.out.println("Account Bean Type ID:" + acc.getBeanTypeID());
                 System.out.println("Account Balance Amount:" + acc.getBalanceAmount());
+                System.out.println("Account Date:" + acc.getBalanceAmount());
                 System.out.println("Account Status:" + acc.getClosed());
             }
         }
