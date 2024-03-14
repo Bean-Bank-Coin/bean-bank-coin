@@ -178,6 +178,9 @@ public class Session {
 
         while (!isWholeNumber(userInput) || !accountValid) {
 
+            System.out.print(LINE_PROMPT + ENV_PROMPT);
+            userInput = scanner.nextLine();
+
             if (isWholeNumber(userInput)) {
                 for (Account userAccount : userAccounts) {
                     if (userAccount.getAccountID() == Integer.parseInt(userInput)) {
