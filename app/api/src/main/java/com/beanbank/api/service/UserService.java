@@ -7,8 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    final
-    UserRepository userRepository;
+    final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -21,6 +20,10 @@ public class UserService {
 
     public User findUserByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     public void deleteUser(int userID) {

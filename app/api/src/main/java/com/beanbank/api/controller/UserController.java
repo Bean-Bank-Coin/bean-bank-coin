@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api")
 public class UserController {
-    final
-    UserService userService;
+    final UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -20,13 +19,18 @@ public class UserController {
         return userService.createUser(user);
     }
 
-    @RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
-    public ResponseEntity<User> getUserByUsername(@PathVariable(value = "username") String username) {
-        User foundUser = userService.findUserByUsername(username);
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
+    public ResponseEntity<User> getUserByUsername(@RequestBody User user) {
+        User foundUser = userService.findUserByUsername(user.getUsername());
 
-        if (foundUser == null)
-            return ResponseEntity.notFound().build();
+        if (foundUser != null)
+            return ResponseEntity.ok(foundUser);
 
-        return ResponseEntity.ok(foundUser);
+        foundUser = userService.findUserByEmail(user.getEmail());
+
+        if (foundUser != null)
+            return ResponseEntity.ok(foundUser);
+
+        return ResponseEntity.notFound().build();
     }
 }
