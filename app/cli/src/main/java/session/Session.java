@@ -1,19 +1,20 @@
 package session;
 
+import java.io.Console;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.Scanner;
+
+import com.google.common.hash.Hashing;
 import com.models.Account;
 import com.models.BeanType;
 import com.models.User;
 
 import request.UserRequest;
 import util.UserInputHandler;
-
-import java.io.Console;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class Session {
@@ -55,8 +56,11 @@ public class Session {
         if (userOption.equalsIgnoreCase("l")) {
             String username = inputHandler.handleUserInput(scanner, USERNAME_PROMPT, Collections.emptyList());
             String password = new String(console.readPassword("Enter a password: "));
+            password = Hashing.sha256()
+                    .hashString(password, StandardCharsets.UTF_8)
+                    .toString();
 
-            Optional<User> userOptional = UserRequest.getInstance().getUser(username);
+            Optional<User> userOptional = UserRequest.getInstance().getUser(username, Optional.empty());
 
             if (!userOptional.isPresent()) {
                 System.out.println(USER_NOT_FOUND_MESSAGE);
@@ -74,16 +78,27 @@ public class Session {
         String username = inputHandler.handleUserInput(scanner, USERNAME_PROMPT, Collections.emptyList());
         String email = inputHandler.handleUserInput(scanner, "Enter your email: ", Collections.emptyList());
         String password = new String(console.readPassword("Enter a password: "));
+        password = Hashing.sha256()
+                .hashString(password, StandardCharsets.UTF_8)
+                .toString();
 
-        Optional<User> userOptional = UserRequest.getInstance().getUser(username);
+        Optional<User> userOptional = UserRequest.getInstance().getUser(username, Optional.of(email));
 
         while (userOptional.isPresent()) {
-            System.out.println("Username already exists.");
-            username = inputHandler.handleUserInput(scanner, USERNAME_PROMPT, Collections.emptyList());
-            userOptional = UserRequest.getInstance().getUser(username);
+            if (userOptional.get().getUsername().equals(username)) {
+                System.out.println("Username already exists");
+                username = inputHandler.handleUserInput(scanner, USERNAME_PROMPT, Collections.emptyList());
+            }
+
+            if (userOptional.get().getEmail().equals(email)) {
+                System.out.println("Email already exists");
+                email = inputHandler.handleUserInput(scanner, "Enter your email: ", Collections.emptyList());
+            }
+
+            userOptional = UserRequest.getInstance().getUser(username, Optional.of(email));
         }
 
-        return UserRequest.getInstance().createUser(username, password, email);
+        return UserRequest.getInstance().createUser(username, password, email).get();
     }
 
     public String startSession(Scanner scanner) {

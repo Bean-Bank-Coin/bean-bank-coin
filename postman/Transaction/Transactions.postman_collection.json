@@ -1,37 +1,38 @@
 {
 	"info": {
-		"_postman_id": "f3c96660-7703-4c7d-bf1d-5da4b1ad4d62",
-		"name": "Users",
+		"_postman_id": "7bff6e89-4cad-428e-b6c8-ac52bb2ec89b",
+		"name": "Transactions",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "33432729"
+		"_exporter_id": "33495299"
 	},
 	"item": [
 		{
-			"name": "Create User",
+			"name": "CreateTransaction",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"// Create Account Test\r",
-							"pm.test(\"Create Account\", function () {\r",
+							"pm.test(\"Create Transaction\", function () {\r",
 							"    pm.sendRequest({\r",
-							"        url: \"http://localhost:8080/api/user\",\r",
-							"        method: 'POST',\r",
+							"        url: \"http://localhost:8080/api/transaction\",\r",
+							"        method: 'PUT',\r",
 							"        header: {\r",
 							"            'Content-Type': 'application/json'\r",
 							"        },\r",
 							"        body: {\r",
 							"            mode: 'raw',\r",
 							"            raw: JSON.stringify({\r",
-							"                username: \"nothingHere\",\r",
-							"                password: \"anythig\",\r",
-							"                email: \"anythig@gmail.com\",\r",
+							"                senderID: 1,\r",
+							"                receiverID: 2,\r",
+							"                transactionTypeID: 3,\r",
+							"                transactionAmount: 10,\r",
+							"                transactionTimestamp: \"2024-03-12T10:15:30\"\r",
 							"            })\r",
 							"        }\r",
 							"    }, function (err, response) {\r",
 							"        pm.expect(err).to.be.null;\r",
-							"        pm.expect(response).to.have.property('code', 200); \r",
+							"        pm.expect(response).to.have.property('code', 200, \"Expected status code to be 200\");\r",
 							"    });\r",
 							"});"
 						],
@@ -41,11 +42,11 @@
 				}
 			],
 			"request": {
-				"method": "POST",
+				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"TestUserName\",\r\n    \"password\": \"Something Secure\",\r\n    \"email\": \"TestUserName@gmail.com\"\r\n}",
+					"raw": "{\r\n    \"senderID\": 1,\r\n    \"receiverID\": 2,\r\n    \"transactionTypeID\": 3,\r\n    \"transactionAmount\": 15,\r\n    \"transactionTimestamp\": \"2024-03-12T10:15:30\"\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -53,7 +54,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/user",
+					"raw": "http://localhost:8080/api/transaction",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -61,23 +62,22 @@
 					"port": "8080",
 					"path": [
 						"api",
-						"user"
+						"transaction"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-<<<<<<< Updated upstream
-			"name": "Get User By Username",
+			"name": "Transaction History",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Get user by username\", function () {\r",
+							"pm.test(\"Get Transaction History\", function () {\r",
 							"    pm.sendRequest({\r",
-							"        url: \"http://localhost:8080/api/user/JakeCole\",\r",
+							"        url: \"http://localhost:8080/api/transaction/history/1\",\r",
 							"        method: 'GET'\r",
 							"    }, \r",
 							"    \r",
@@ -92,9 +92,6 @@
 					}
 				}
 			],
-=======
-			"name": "GetUser",
->>>>>>> Stashed changes
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -103,11 +100,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-<<<<<<< Updated upstream
 					"raw": "",
-=======
-					"raw": "{\r\n    \"email\": \"verushan\"\r\n}",
->>>>>>> Stashed changes
 					"options": {
 						"raw": {
 							"language": "json"
@@ -115,11 +108,7 @@
 					}
 				},
 				"url": {
-<<<<<<< Updated upstream
-					"raw": "http://localhost:8080/api/user/JakeCole",
-=======
-					"raw": "http://localhost:8080/api/user",
->>>>>>> Stashed changes
+					"raw": "http://localhost:8080/api/transaction/history/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -127,12 +116,9 @@
 					"port": "8080",
 					"path": [
 						"api",
-<<<<<<< Updated upstream
-						"user",
-						"JakeCole"
-=======
-						"user"
->>>>>>> Stashed changes
+						"transaction",
+						"history",
+						"1"
 					]
 				}
 			},
