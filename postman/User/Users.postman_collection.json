@@ -3,7 +3,7 @@
 		"_postman_id": "f3c96660-7703-4c7d-bf1d-5da4b1ad4d62",
 		"name": "Users",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "33495299"
+		"_exporter_id": "33432729"
 	},
 	"item": [
 		{
@@ -68,6 +68,7 @@
 			"response": []
 		},
 		{
+<<<<<<< Updated upstream
 			"name": "Get User By Username",
 			"event": [
 				{
@@ -91,6 +92,9 @@
 					}
 				}
 			],
+=======
+			"name": "GetUser",
+>>>>>>> Stashed changes
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -99,7 +103,11 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
+<<<<<<< Updated upstream
 					"raw": "",
+=======
+					"raw": "{\r\n    \"email\": \"verushan\"\r\n}",
+>>>>>>> Stashed changes
 					"options": {
 						"raw": {
 							"language": "json"
@@ -107,7 +115,11 @@
 					}
 				},
 				"url": {
+<<<<<<< Updated upstream
 					"raw": "http://localhost:8080/api/user/JakeCole",
+=======
+					"raw": "http://localhost:8080/api/user",
+>>>>>>> Stashed changes
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -115,8 +127,12 @@
 					"port": "8080",
 					"path": [
 						"api",
+<<<<<<< Updated upstream
 						"user",
 						"JakeCole"
+=======
+						"user"
+>>>>>>> Stashed changes
 					]
 				}
 			},
