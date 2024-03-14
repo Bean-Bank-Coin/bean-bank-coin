@@ -13,6 +13,7 @@ import com.models.Account;
 import com.models.BeanType;
 import com.models.User;
 
+import request.DashboardRequest;
 import request.UserRequest;
 import util.UserInputHandler;
 
@@ -120,6 +121,7 @@ public class Session {
                 System.out.println(getHelpCommands());
             } else if (userInput.equals(DASHBOARD_COMMAND)) {
                 System.out.println("Dashboard");
+                getDashBoard(currUser.getUserID());
             } else if (userInput.equals(CREATE_ACCOUNT_COMMAND)) {
                 System.out.println("Create Account");
             } else if (userInput.equals(CLOSE_ACCOUNT_COMMAND)) {
@@ -165,5 +167,21 @@ public class Session {
                 HELP_COMMAND + "\n" +
                 SessionManager.EXIT_COMMAND + "\n" +
                 TRANSFER_COMMAND;
+    }
+    public void getDashBoard(int userId){
+        DashboardRequest dashDisplay = new DashboardRequest();
+        List<Account> accountList = dashDisplay.getAccounts(userId);
+        if (!accountList.isEmpty()) {
+            for (Account acc : accountList) {
+                System.out.println("Account details:Account ID:" + acc.getAccountID());
+                System.out.println("Account Bean Type ID:" + acc.getBeanTypeID());
+                System.out.println("Account Balance Amount:" + acc.getBalanceAmount());
+                System.out.println("Account Status:" + acc.getClosed());
+            }
+        }
+        else
+        {
+            System.out.println("No accounts to display.");
+        }
     }
 }
