@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Account")
@@ -45,6 +46,24 @@ public class Account {
         this.balanceAmount = balanceAmount;
         this.dateCreated = dateCreated;
         this.isClosed = isClosed;
+    }
+
+    @Override
+    public boolean equals(Object otherAccounObject) {
+        if (this == otherAccounObject) return true;
+        if (otherAccounObject == null || getClass() != otherAccounObject.getClass()) return false;
+        Account account = (Account) otherAccounObject;
+        return  (accountID == account.accountID &&
+                userID == account.userID &&
+                beanTypeID == account.beanTypeID &&
+                isClosed == account.isClosed &&
+                Objects.equals(balanceAmount, account.balanceAmount) &&
+                Objects.equals(dateCreated, account.dateCreated));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(accountID, userID, beanTypeID, balanceAmount, dateCreated, isClosed);
     }
 
     public int getAccountID() {
