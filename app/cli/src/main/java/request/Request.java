@@ -12,7 +12,7 @@ import org.json.JSONObject;
 public class Request {
     private String urlBase = "http://";
 
-    private final static String host = "localhost:8080/api/";
+    private final static String host = "54.195.208.130:8080/api/";
 
     public Request() {
         urlBase = urlBase + host;
