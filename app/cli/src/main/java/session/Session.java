@@ -251,13 +251,6 @@ public class Session {
             userInput = scanner.nextLine();
 
             if (isWholeNumber(userInput)) {
-                // for (Account userAccount : userAccounts) {
-                // if (userAccount.getAccountID() == Integer.parseInt(userInput)) {
-                // accountValid = true;
-                // break;
-                // }
-                // }
-
                 accountValid = true;
             }
 
