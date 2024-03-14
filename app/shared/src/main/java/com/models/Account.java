@@ -31,6 +31,22 @@ public class Account {
     @Column(name = "IsClosed")
     private Boolean isClosed;
 
+    public Account(
+        int accountID,
+        int userID,
+        int beanTypeID,
+        BigDecimal balanceAmount,
+        Date dateCreated,
+        Boolean isClosed
+    ){
+        this.accountID = accountID;
+        this.userID = userID;
+        this.beanTypeID = beanTypeID;
+        this.balanceAmount = balanceAmount;
+        this.dateCreated = dateCreated;
+        this.isClosed = isClosed;
+    }
+
     public int getAccountID() {
         return accountID;
     }
