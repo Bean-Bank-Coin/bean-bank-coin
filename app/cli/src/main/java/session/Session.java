@@ -13,6 +13,7 @@ import com.models.Account;
 import com.models.BeanType;
 import com.models.User;
 
+import request.AccountRequest;
 import request.UserRequest;
 import util.UserInputHandler;
 import java.util.regex.Pattern;
@@ -203,6 +204,13 @@ public class Session {
 
             System.out.print(LINE_PROMPT + ENV_PROMPT);
             userInput = scanner.nextLine();
+        }
+
+        List<Account> userAccounts = AccountRequest.getInstance().getAccounts(currUser.getUserID());
+
+        for (Account userAccount : userAccounts) {
+            System.out.println(userAccount.getAccountID());
+            System.out.println(userAccount.getBalanceAmount());
         }
 
         account = userInput;
