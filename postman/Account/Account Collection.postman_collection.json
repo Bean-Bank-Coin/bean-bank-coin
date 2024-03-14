@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "d22e33e4-5623-479e-b687-d05b9ae58be4",
+		"_postman_id": "e6dad9e9-1806-476f-aca3-848a63f64fd2",
 		"name": "Account Collection",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "33495299"
@@ -8,12 +8,46 @@
 	"item": [
 		{
 			"name": "Create Account",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Create Account Test\r",
+							"pm.test(\"Create Account\", function () {\r",
+							"    pm.sendRequest({\r",
+							"        url: \"http://localhost:8080/api/accounts\",\r",
+							"        method: 'POST',\r",
+							"        header: {\r",
+							"            'Content-Type': 'application/json'\r",
+							"        },\r",
+							"        body: {\r",
+							"            mode: 'raw',\r",
+							"            raw: JSON.stringify({\r",
+							"                userID: 1,\r",
+							"                beanTypeID: 2,\r",
+							"                balanceAmount: 125.00,\r",
+							"                dateCreated: \"2024-03-09\",\r",
+							"                closed: true\r",
+							"            })\r",
+							"        }\r",
+							"    }, function (err, response) {\r",
+							"        pm.expect(err).to.be.null;\r",
+							"        pm.expect(response).to.have.property('code', 200); \r",
+							"    });\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"userID\": 82,\r\n    \"beanTypeID\": 2,\r\n    \"balanceAmount\": 666.123,\r\n    \"dateCreated\": \"2024-03-09\",\r\n    \"closed\": true\r\n}",
+					"raw": "{\r\n    \"userID\": 1,\r\n    \"beanTypeID\": 2,\r\n    \"balanceAmount\": 125.00,\r\n    \"dateCreated\": \"2024-03-09\",\r\n    \"closed\": true\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -37,11 +71,33 @@
 		},
 		{
 			"name": "Get Accounts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Get Accounts\", function () {\r",
+							"    pm.sendRequest({\r",
+							"        url: \"http://localhost:8080/api/accounts/1\",\r",
+							"        method: 'GET'\r",
+							"    }, \r",
+							"    \r",
+							"    function (err, response) {\r",
+							"        pm.expect(err).to.be.null;\r",
+							"        pm.expect(response).to.have.property('code', 200); \r",
+							"    });\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/accounts",
+					"raw": "http://localhost:8080/api/accounts/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -49,7 +105,8 @@
 					"port": "8080",
 					"path": [
 						"api",
-						"accounts"
+						"accounts",
+						"1"
 					]
 				}
 			},
@@ -57,6 +114,35 @@
 		},
 		{
 			"name": "Update Balance",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Update Balance\", function () {\r",
+							"    pm.sendRequest({\r",
+							"        url: \"http://localhost:8080/api/accounts/1\",\r",
+							"        method: 'PUT',\r",
+							"        header: {\r",
+							"            'Content-Type': 'application/json'\r",
+							"        },\r",
+							"        body: {\r",
+							"            mode: 'raw',\r",
+							"            raw: JSON.stringify({\r",
+							"                balanceAmount: 260.00,\r",
+							"            })\r",
+							"        }\r",
+							"    }, function (err, response) {\r",
+							"        pm.expect(err).to.be.null;\r",
+							"        pm.expect(response).to.have.property('code', 200); \r",
+							"    });\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "PUT",
 				"header": [],
