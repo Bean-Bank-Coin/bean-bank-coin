@@ -36,6 +36,6 @@ public class UserService {
         currentUser.setUsername(userInfo.getUsername());
         currentUser.setPassword(userInfo.getPassword());
         currentUser.setEmail(userInfo.getEmail());
-        return currentUser;
+        return userRepository.save(currentUser);
     }
 }

@@ -1,5 +1,7 @@
 package com.models;
 
+import java.util.Objects;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,7 +12,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
-@Table(name = "User")
+@Table(name = "Users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +27,22 @@ public class User {
 
     @Column(name = "Email", unique = true)
     private String email;
+
+    @Override
+    public boolean equals(Object otherUser) {
+        if (this == otherUser) return true;
+        if (otherUser == null || getClass() != otherUser.getClass()) return false;
+        User user = (User) otherUser;
+        return  (userID == user.userID &&
+                username.equals(user.username) &&
+                password.equals(user.password) &&
+                email.equals(user.email));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userID, username, password, email);
+    }
 
     public User(int userID, String username, String password, String email) {
         this.userID = userID;
