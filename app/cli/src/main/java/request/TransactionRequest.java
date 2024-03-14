@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -21,13 +22,13 @@ import com.models.Account;
 public class TransactionRequest {
     private static TransactionRequest transactionRequest = null;
 
-    public void withDraw(int balance, int accountID) throws JSONException {
+    public void withDraw(BigDecimal balance, int accountID) {
 
         JSONObject payload = new JSONObject();
         payload.put("balanceAmount", balance);
 
         Request request = new Request();
-        HttpResponse<String> response = request.makeRequest("accounts/" + String.valueOf(accountID), RequestType.POST,
+        HttpResponse<String> response = request.makeRequest("accounts/" + String.valueOf(accountID), RequestType.PUT,
                 Optional.of(payload));
     }
 

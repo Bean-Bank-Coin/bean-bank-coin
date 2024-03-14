@@ -15,6 +15,7 @@ import com.models.BeanType;
 import com.models.User;
 
 import request.AccountRequest;
+import request.TransactionRequest;
 import request.UserRequest;
 import util.UserInputHandler;
 import java.util.regex.Pattern;
@@ -134,7 +135,6 @@ public class Session {
         if (userInput.equals(HELP_COMMAND)) {
             System.out.println(getHelpCommands("all"));
         } else if (userInput.equals(DASHBOARD_COMMAND)) {
-            System.out.println("Dashboard");
             getDashBoard(currUser.getUserID());
         } else if (userInput.equals(CREATE_ACCOUNT_COMMAND)) {
             System.out.println("Create Account");
@@ -159,8 +159,9 @@ public class Session {
         final String CONFIRMATION_PROMPT = "[Withdraw confirmed]\n[Taking you back to the home page]\n";
         final String ENV_PROMPT = "Withdraw > ";
         boolean amountEntered = false;
-        String amount;
+        BigDecimal amount;
         String account;
+        BigDecimal currBalance = new BigDecimal(0);
         boolean accountValid = false;
         boolean ammountValid = false;
 
@@ -216,6 +217,8 @@ public class Session {
                 for (Account userAccount : userAccounts) {
                     if (userAccount.getBalanceAmount().compareTo(inputAmount) >= 0
                             && userAccount.getAccountID() == Integer.parseInt(account)) {
+
+                        currBalance = userAccount.getBalanceAmount();
                         ammountValid = true;
                         break;
                     }
@@ -233,12 +236,12 @@ public class Session {
 
         }
 
-        amount = userInput;
+        amount = new BigDecimal(userInput);
 
+        BigDecimal newBalance = currBalance.subtract(amount);
+        TransactionRequest.getInstance().withDraw(newBalance, Integer.parseInt(account));
         System.out.println(CONFIRMATION_PROMPT);
         return;
-
-        // Function to withdraw
 
     }
 
@@ -353,7 +356,7 @@ public class Session {
         if (!accountList.isEmpty()) {
             for (Account acc : accountList) {
                 if (!acc.getClosed()) {
-                    System.out.print("Account " + acc.getAccountID() + " details: \n---------------------\n");
+                    System.out.print("\nAccount " + acc.getAccountID() + " details: \n---------------------\n");
                     System.out.print("ID:" + acc.getAccountID());
                     System.out.print(", Bean Type ID:" + acc.getBeanTypeID());
                     System.out.print(", Balance Amount:" + acc.getBalanceAmount() + "\n");
