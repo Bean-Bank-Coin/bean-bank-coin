@@ -30,7 +30,6 @@ public class AccountRequest {
         if (response.body().isEmpty())
             return Collections.emptyList();
 
-        System.out.println(response.body());
         JSONArray userAccountsJson = new JSONArray(response.body());
         List<Account> userAccounts = new ArrayList<>();
 

@@ -1,6 +1,7 @@
 package session;
 
 import java.io.Console;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
@@ -134,7 +135,7 @@ public class Session {
             System.out.println(getHelpCommands("all"));
         } else if (userInput.equals(DASHBOARD_COMMAND)) {
             System.out.println("Dashboard");
-                getDashBoard(currUser.getUserID());
+            getDashBoard(currUser.getUserID());
         } else if (userInput.equals(CREATE_ACCOUNT_COMMAND)) {
             System.out.println("Create Account");
         } else if (userInput.equals(CLOSE_ACCOUNT_COMMAND)) {
@@ -160,61 +161,77 @@ public class Session {
         boolean amountEntered = false;
         String amount;
         String account;
+        boolean accountValid = false;
+        boolean ammountValid = false;
 
         String userInput = "";
+        List<Account> userAccounts = AccountRequest.getInstance().getAccounts(currUser.getUserID());
+        System.out.println("Your accounts are: \n------------------");
 
-        System.out.println(WITHDRAW_PROMPT);
-        System.out.print(LINE_PROMPT + ENV_PROMPT);
-        userInput = scanner.nextLine();
-
-        if (userInput.equals(BACK_COMMAND)) {
-            System.out.println("[Navigating back to home page]");
-            return;
+        for (Account userAccount : userAccounts) {
+            System.out.println(
+                    "Account " + userAccount.getAccountID() + " has balance R" + userAccount.getBalanceAmount());
         }
 
-        while (!isNumber(userInput)) {
+        System.out.println();
+        System.out.println(ACCOUNT_PROMPT);
+
+        while (!isWholeNumber(userInput) || !accountValid) {
+
+            if (isWholeNumber(userInput)) {
+                for (Account userAccount : userAccounts) {
+                    if (userAccount.getAccountID() == Integer.parseInt(userInput)) {
+                        accountValid = true;
+                        break;
+                    }
+                }
+            }
+
+            if (userInput.equals(BACK_COMMAND)) {
+                return;
+            }
+
+            if (userInput.equals(HELP_COMMAND)) {
+                System.out.println(getHelpCommands("withdraw"));
+            } else if (!accountValid) {
+                System.out.println("Invalid account number. Try again or type -help for help");
+            }
+
+        }
+
+        account = userInput;
+
+        System.out.println(WITHDRAW_PROMPT);
+
+        while (!isNumber(userInput) || !ammountValid) {
+
+            System.out.print(LINE_PROMPT + ENV_PROMPT);
+            userInput = scanner.nextLine();
+
+            if (isNumber(userInput)) {
+                BigDecimal inputAmount = new BigDecimal(userInput);
+                for (Account userAccount : userAccounts) {
+                    if (userAccount.getBalanceAmount().compareTo(inputAmount) >= 0
+                            && userAccount.getAccountID() == Integer.parseInt(account)) {
+                        ammountValid = true;
+                        break;
+                    }
+                }
+            }
+
             if (userInput.equals(BACK_COMMAND)) {
                 return;
             }
             if (userInput.equals(HELP_COMMAND)) {
                 System.out.println(getHelpCommands("withdraw"));
-            } else {
+            } else if (!ammountValid) {
                 System.out.println("Invalid amount. Try again or type -help for help");
             }
 
-            System.out.print(LINE_PROMPT + ENV_PROMPT);
-            userInput = scanner.nextLine();
         }
 
         amount = userInput;
 
-        System.out.println(ACCOUNT_PROMPT);
-        System.out.print(LINE_PROMPT + ENV_PROMPT);
-        userInput = scanner.nextLine();
-
-        while (!isWholeNumber(userInput)) {
-            if (userInput.equals(BACK_COMMAND)) {
-                return;
-            }
-
-            if (userInput.equals(HELP_COMMAND)) {
-                System.out.println(getHelpCommands("withdraw"));
-            } else {
-                System.out.println("Invalid account number. Try again or type -help for help");
-            }
-
-            System.out.print(LINE_PROMPT + ENV_PROMPT);
-            userInput = scanner.nextLine();
-        }
-
-        List<Account> userAccounts = AccountRequest.getInstance().getAccounts(currUser.getUserID());
-
-        for (Account userAccount : userAccounts) {
-            System.out.println(userAccount.getAccountID());
-            System.out.println(userAccount.getBalanceAmount());
-        }
-
-        account = userInput;
         System.out.println(CONFIRMATION_PROMPT);
         return;
 
@@ -327,22 +344,19 @@ public class Session {
                 TRANSFER_COMMAND + "\n");
     }
 
-    public void getDashBoard(int userId){
+    public void getDashBoard(int userId) {
         AccountRequest dashDisplay = AccountRequest.getInstance();
         List<Account> accountList = dashDisplay.getAccounts(userId);
         if (!accountList.isEmpty()) {
             for (Account acc : accountList) {
-                if(!acc.getClosed())
-                {
+                if (!acc.getClosed()) {
                     System.out.print("Account " + acc.getAccountID() + " details: \n---------------------\n");
                     System.out.print("ID:" + acc.getAccountID());
                     System.out.print(", Bean Type ID:" + acc.getBeanTypeID());
-                    System.out.print(", Balance Amount:" + acc.getBalanceAmount());
+                    System.out.print(", Balance Amount:" + acc.getBalanceAmount() + "\n");
                 }
             }
-        }
-        else
-        {
+        } else {
             System.out.println("No accounts to display.");
         }
     }
