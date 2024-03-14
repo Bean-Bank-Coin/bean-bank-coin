@@ -173,7 +173,8 @@ public class Session {
 
         for (Account userAccount : userAccounts) {
             System.out.println(
-                    "Account " + userAccount.getAccountID() + " has balance R" + userAccount.getBalanceAmount());
+                    "Account " + userAccount.getAccountID() + " has balance R"
+                            + convertToRands(userAccount.getBalanceAmount(), userAccount.getBeanTypeID()));
         }
 
         System.out.println();
@@ -217,10 +218,11 @@ public class Session {
             if (isNumber(userInput)) {
                 BigDecimal inputAmount = new BigDecimal(userInput);
                 for (Account userAccount : userAccounts) {
-                    if (userAccount.getBalanceAmount().compareTo(inputAmount) >= 0
+                    if (convertToRands(userAccount.getBalanceAmount(), userAccount.getBeanTypeID())
+                            .compareTo(inputAmount) >= 0
                             && userAccount.getAccountID() == Integer.parseInt(account)) {
 
-                        currBalance = userAccount.getBalanceAmount();
+                        currBalance = convertToRands(userAccount.getBalanceAmount(), userAccount.getBeanTypeID());
                         ammountValid = true;
                         break;
                     }
@@ -291,7 +293,8 @@ public class Session {
 
         for (Account userAccount : userAccounts) {
             System.out.println(
-                    "Account " + userAccount.getAccountID() + " has balance R" + userAccount.getBalanceAmount());
+                    "Account " + userAccount.getAccountID() + " has balance R"
+                            + convertToRands(userAccount.getBalanceAmount(), userAccount.getBeanTypeID()));
         }
 
         System.out.println();
@@ -335,10 +338,11 @@ public class Session {
             if (isNumber(userInput)) {
                 BigDecimal inputAmount = new BigDecimal(userInput);
                 for (Account userAccount : userAccounts) {
-                    if (userAccount.getBalanceAmount().compareTo(inputAmount) >= 0
+                    if (convertToRands(userAccount.getBalanceAmount(), userAccount.getBeanTypeID())
+                            .compareTo(inputAmount) >= 0
                             && userAccount.getAccountID() == Integer.parseInt(account)) {
 
-                        currBalance = userAccount.getBalanceAmount();
+                        currBalance = convertToRands(userAccount.getBalanceAmount(), userAccount.getBeanTypeID());
                         ammountValid = true;
                         break;
                     }
@@ -357,9 +361,7 @@ public class Session {
         }
 
         amount = new BigDecimal(userInput);
-
-        BigDecimal newBalance = currBalance.subtract(amount);
-        TransactionRequest.getInstance().withDraw(newBalance, Integer.parseInt(account));
+        TransactionRequest.getInstance().withDraw(amount, Integer.parseInt(account));
         System.out.println(CONFIRMATION_PROMPT);
         return;
 
@@ -383,7 +385,8 @@ public class Session {
 
         for (Account userAccount : userAccounts) {
             System.out.println(
-                    "Account " + userAccount.getAccountID() + " has balance R" + userAccount.getBalanceAmount());
+                    "Account " + userAccount.getAccountID() + " has balance R"
+                            + convertToRands(userAccount.getBalanceAmount(), userAccount.getBeanTypeID()));
         }
 
         System.out.println();
@@ -536,11 +539,45 @@ public class Session {
                     System.out.print("\nAccount " + acc.getAccountID() + " details: \n---------------------\n");
                     System.out.print("ID:" + acc.getAccountID());
                     System.out.print(", Bean Type ID:" + acc.getBeanTypeID());
-                    System.out.print(", Balance Amount:" + acc.getBalanceAmount() + "\n");
+                    System.out.print(
+                            ", Balance Amount:" + "R" + convertToRands(acc.getBalanceAmount(), acc.getBeanTypeID())
+                                    + "\n");
                 }
             }
         } else {
             System.out.println("No accounts to display.");
+        }
+    }
+
+    public static BigDecimal convertToRands(BigDecimal amount, int beanTypeID) {
+        BigDecimal valueInRands = getValueInRands(beanTypeID);
+        if (valueInRands == null) {
+            System.out.println("Invalid beanTypeID");
+            return BigDecimal.ZERO;
+        }
+        return amount.multiply(valueInRands);
+    }
+
+    private static BigDecimal getValueInRands(int beanTypeID) {
+        switch (beanTypeID) {
+            case 1:
+                return new BigDecimal("5.00");
+            case 2:
+                return new BigDecimal("10.00");
+            case 3:
+                return new BigDecimal("15.00");
+            case 4:
+                return new BigDecimal("20.00");
+            case 5:
+                return new BigDecimal("25.00");
+            case 6:
+                return new BigDecimal("30.00");
+            case 7:
+                return new BigDecimal("35.00");
+            case 8:
+                return new BigDecimal("40.00");
+            default:
+                return null;
         }
     }
 
