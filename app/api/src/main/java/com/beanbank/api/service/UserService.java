@@ -3,6 +3,9 @@ package com.beanbank.api.service;
 import com.beanbank.api.repository.UserRepository;
 import com.models.User;
 import jakarta.transaction.Transactional;
+
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,24 +21,17 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User findUserByUsername(String username) {
+    public User findUser(int id) {
+        Optional<User> foundUser = userRepository.findById(id);
+
+        if (foundUser.isPresent()) {
+            return foundUser.get();
+        }
+
+        return null;
+    }
+
+    public User getUserByUsername(String username) {
         return userRepository.findByUsername(username);
-    }
-
-    public User findUserByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
-
-    public void deleteUser(int userID) {
-        userRepository.deleteById(userID);
-    }
-
-    @Transactional
-    public User updateUser(int userID, User userInfo) {
-        User currentUser = userRepository.findById(userID).get();
-        currentUser.setUsername(userInfo.getUsername());
-        currentUser.setPassword(userInfo.getPassword());
-        currentUser.setEmail(userInfo.getEmail());
-        return currentUser;
     }
 }

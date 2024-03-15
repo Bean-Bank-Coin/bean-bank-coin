@@ -19,12 +19,6 @@ public class BeanTypeController {
         this.beanTypeService = beanTypeService;
     }
 
-    @Transactional
-    @RequestMapping(value = "/beantype", method = RequestMethod.PUT)
-    public BeanType addBeanType(@RequestBody BeanType beanType) {
-        return beanTypeService.addBeanType(beanType);
-    }
-
     @RequestMapping(value = "/beantype", method = RequestMethod.GET)
     public List<BeanType> getBeanTypes() {
         return beanTypeService.getBeanTypes();

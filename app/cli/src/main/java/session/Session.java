@@ -2,6 +2,7 @@ package session;
 
 import java.io.Console;
 import java.math.BigDecimal;
+import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,24 +16,20 @@ import com.models.BeanType;
 import com.models.User;
 
 import request.AccountRequest;
+import request.Request;
+import request.RequestType;
 import request.TransactionRequest;
-import request.UserRequest;
+import util.Auth;
 import util.UserInputHandler;
 import java.util.regex.Pattern;
 
+import org.json.JSONObject;
+
 public class Session {
-    private User currentUser;
-
-    private List<BeanType> beanTypes;
-
-    private List<Account> userAccounts;
-
     private static final String LINE_PROMPT = "> ";
     private static final String WELCOME_USER_PROMPT_START = "Welcome, ";
     private static final String WELCOME_USER_PROMPT_END = "!";
-    private static final String USER_NOT_FOUND_MESSAGE = "Username not found.";
     private static final String LOGOUT_COMMAND = "-logout";
-    private static final String ERROR_COMMAND = "error";
     private static final String HELP_COMMAND = "-help";
     private static final String DASHBOARD_COMMAND = "-dashboard";
     private static final String TRANSFER_COMMAND = "-transfer";
@@ -42,83 +39,31 @@ public class Session {
     private static final String CREATE_ACCOUNT_COMMAND = "-createAccount";
     private static final String CLOSE_ACCOUNT_COMMAND = "-closeAccount";
     private static final String HOME_COMMAND = "-home";
+    private String token;
+    private User user;
 
-    public Session() {
+    public Session(Scanner scanner) {
+        Auth auth = new Auth();
+        this.token = auth.runAuth(scanner);
+        String username = auth.getUsername(token);
+        Request request = new Request(this.token);
+        HttpResponse<String> response = request.makeRequest("user/" + username, RequestType.GET, Optional.empty());
+        JSONObject jsonResponse = new JSONObject(response.body());
+        this.user = new User();
+        this.user.setUserID(jsonResponse.getInt("userID"));
+        this.user.setUsername(jsonResponse.getString("username"));
 
-    }
-
-    public User signInOrRegisterUser(Scanner scanner) {
-        final String LOG_IN_SIGN_UP_PROMPT = "Login (L) or Register (R) ";
-        final String USERNAME_PROMPT = "Enter your username: ";
-
-        Console console = System.console();
-        UserInputHandler inputHandler = UserInputHandler.getInstance();
-        String userOption = inputHandler.handleUserInput(scanner, LOG_IN_SIGN_UP_PROMPT,
-                Arrays.asList("l", "r"));
-
-        if (userOption.equalsIgnoreCase("l")) {
-            String username = inputHandler.handleUserInput(scanner, USERNAME_PROMPT, Collections.emptyList());
-            String password = new String(console.readPassword("Enter a password: "));
-            password = Hashing.sha256()
-                    .hashString(password, StandardCharsets.UTF_8)
-                    .toString();
-
-            Optional<User> userOptional = UserRequest.getInstance().getUser(username, Optional.empty());
-
-            if (!userOptional.isPresent()) {
-                System.out.println(USER_NOT_FOUND_MESSAGE);
-                return null;
-            }
-
-            if (!password.equals(userOptional.get().getPassword())) {
-                System.out.println("Incorrect password");
-                return null;
-            }
-
-            return userOptional.get();
-        }
-
-        String username = inputHandler.handleUserInput(scanner, USERNAME_PROMPT, Collections.emptyList());
-        String email = inputHandler.handleUserInput(scanner, "Enter your email: ", Collections.emptyList());
-        String password = new String(console.readPassword("Enter a password: "));
-        password = Hashing.sha256()
-                .hashString(password, StandardCharsets.UTF_8)
-                .toString();
-
-        Optional<User> userOptional = UserRequest.getInstance().getUser(username, Optional.of(email));
-
-        while (userOptional.isPresent()) {
-            if (userOptional.get().getUsername().equals(username)) {
-                System.out.println("Username already exists");
-                username = inputHandler.handleUserInput(scanner, USERNAME_PROMPT, Collections.emptyList());
-            }
-
-            if (userOptional.get().getEmail().equals(email)) {
-                System.out.println("Email already exists");
-                email = inputHandler.handleUserInput(scanner, "Enter your email: ", Collections.emptyList());
-            }
-
-            userOptional = UserRequest.getInstance().getUser(username, Optional.of(email));
-        }
-
-        return UserRequest.getInstance().createUser(username, password, email).get();
+        TransactionRequest.token = this.token;
+        AccountRequest.token = this.token;
     }
 
     public String startSession(Scanner scanner) {
-
-        User currUser = signInOrRegisterUser(scanner);
-
-        if (currUser == null) {
-            return LOGOUT_COMMAND;
-        }
-
-        System.out.println(WELCOME_USER_PROMPT_START + currUser.getUsername() + WELCOME_USER_PROMPT_END);
+        System.out.println(WELCOME_USER_PROMPT_START + this.user.getUsername() + WELCOME_USER_PROMPT_END);
         System.out.print(LINE_PROMPT);
         String userInput = scanner.nextLine();
 
         while (!userInput.equals(LOGOUT_COMMAND) && !userInput.equals(SessionManager.EXIT_COMMAND)) {
-
-            navigator(currUser, userInput, scanner);
+            navigator(this.user, userInput, scanner);
             System.out.print(LINE_PROMPT);
             userInput = scanner.nextLine();
         }
@@ -137,9 +82,9 @@ public class Session {
         } else if (userInput.equals(DASHBOARD_COMMAND)) {
             getDashBoard(currUser.getUserID());
         } else if (userInput.equals(CREATE_ACCOUNT_COMMAND)) {
-            createAccount(currUser.getUserID());
+            createAccount(scanner);
         } else if (userInput.equals(CLOSE_ACCOUNT_COMMAND)) {
-            closeAccount(currUser.getUserID());
+            closeAccount(currUser.getUserID(), scanner);
         } else if (userInput.equals(DEPOSIT_COMMAND)) {
             deposit(scanner, currUser);
         } else if (userInput.equals(WITHDRAW_COMMAND)) {
@@ -152,18 +97,16 @@ public class Session {
         }
     }
 
-    public void createAccount(int userID) {
+    public void createAccount(Scanner scanner) {
         AccountRequest createNewAccount = AccountRequest.getInstance();
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the Bean Type ID you would like to use: ");
-        int beantypeId = scanner.nextInt();
+        int beantypeId = Integer.parseInt(scanner.nextLine());
         BigDecimal balanceAmt = new BigDecimal(50.00);
-        createNewAccount.createAccount(userID, beantypeId, balanceAmt, true);
+        createNewAccount.createAccount(beantypeId, balanceAmt, true, user);
     }
 
-    public void closeAccount(int userID) {
+    public void closeAccount(int userID, Scanner scanner) {
         AccountRequest Account = AccountRequest.getInstance();
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Please specify the account ID you would like to close: ");
         int accID = scanner.nextInt();
         if (Account.closeAccount(userID, accID) == false) {
@@ -290,7 +233,8 @@ public class Session {
 
         String recieverAccount = userInput;
 
-        TransactionRequest.getInstance().transfer(amount, Integer.parseInt(account), Integer.parseInt(recieverAccount));
+        TransactionRequest.getInstance().transfer(amount, Integer.parseInt(account), Integer.parseInt(recieverAccount),
+                user.getUserID());
         System.out.println(CONFIRMATION_PROMPT);
         return;
 
@@ -382,7 +326,7 @@ public class Session {
         }
 
         amount = new BigDecimal(userInput);
-        TransactionRequest.getInstance().withDraw(amount, Integer.parseInt(account));
+        TransactionRequest.getInstance().withDraw(amount, Integer.parseInt(account), user.getUserID());
         System.out.println(CONFIRMATION_PROMPT);
         return;
 
@@ -464,7 +408,7 @@ public class Session {
 
         amount = new BigDecimal(userInput);
 
-        TransactionRequest.getInstance().deposit(amount, Integer.parseInt(account));
+        TransactionRequest.getInstance().deposit(amount, Integer.parseInt(account), user.getUserID());
         System.out.println(CONFIRMATION_PROMPT);
         return;
 
@@ -480,10 +424,6 @@ public class Session {
         String wholeNumberPattern = "-?\\d+";
         Pattern pattern = Pattern.compile(wholeNumberPattern);
         return pattern.matcher(input).matches();
-    }
-
-    public void setCurrentUser(User currentUser) {
-        this.currentUser = currentUser;
     }
 
     public String getHelpCommands(String option) {

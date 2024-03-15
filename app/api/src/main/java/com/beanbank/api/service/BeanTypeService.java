@@ -14,10 +14,6 @@ public class BeanTypeService {
         this.beanTypeRepository = beanTypeRepository;
     }
 
-    public BeanType addBeanType(BeanType beanType) {
-        return beanTypeRepository.save(beanType);
-    }
-
     public List<BeanType> getBeanTypes() {
         return beanTypeRepository.findAll();
     }

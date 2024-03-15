@@ -1,7 +1,10 @@
 package com.beanbank.api.controller;
 
 import com.beanbank.api.service.AccountService;
+import com.beanbank.api.service.UserService;
 import com.models.Account;
+import com.models.User;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,25 +13,30 @@ import java.util.List;
 @RequestMapping("/api")
 public class AccountController {
     final AccountService accountService;
+    final UserService userService;
 
-    public AccountController(AccountService accountService) {
+    public AccountController(AccountService accountService, UserService userService) {
         this.accountService = accountService;
+        this.userService = userService;
     }
 
-    @RequestMapping(value = "/accounts", method = RequestMethod.POST)
-    public Account createAccount(@RequestBody Account account) {
+    @RequestMapping(value = "/accounts/{username}", method = RequestMethod.POST)
+    public Account createAccount(@PathVariable("username") String username, @RequestBody Account account) {
+        if (!UserController.currentUser.equals(username)) {
+            return null;
+        }
+
         return accountService.createAccount(account);
     }
 
     @RequestMapping(value = "/accounts/{userID}", method = RequestMethod.GET)
     public List<Account> getAccounts(@PathVariable(value = "userID") int userID) {
-        return accountService.getAccountsForUser(userID);
-    }
+        User foundUser = userService.findUser(userID);
 
-    @RequestMapping(value = "/accounts/{accountID}", method = RequestMethod.PUT)
-    public Account updateBalance(
-            @PathVariable(value = "accountID") int accountID,
-            @RequestBody Account accountDetails) {
-        return accountService.updateBalance(accountID, accountDetails);
+        if (!UserController.currentUser.equals(foundUser.getUsername())) {
+            return null;
+        }
+
+        return accountService.getAccountsForUser(userID);
     }
 }

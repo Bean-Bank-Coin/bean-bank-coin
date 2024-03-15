@@ -1,30 +1,21 @@
 package request;
 
-import java.net.http.HttpResponse;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
-
-import javax.swing.text.AbstractDocument;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.models.Account;
+import java.math.MathContext;
+import java.math.RoundingMode;
+import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
+
+import org.json.JSONObject;
 
 public class TransactionRequest {
     private static TransactionRequest transactionRequest = null;
 
-    public void withDraw(BigDecimal withdrawAmount, int accountID) {
+    public static String token = "";
+
+    public void withDraw(BigDecimal withdrawAmount, int accountID, int userID) {
 
         JSONObject payload = new JSONObject();
         payload.put("senderID", accountID);
@@ -36,12 +27,12 @@ public class TransactionRequest {
         String formattedDateTime = currentDateTime.format(formatter);
         payload.put("transactionTimestamp", formattedDateTime);
 
-        Request request = new Request();
-        HttpResponse<String> response = request.makeRequest("transaction", RequestType.PUT,
+        Request request = new Request(token);
+        HttpResponse<String> response = request.makeRequest("transaction/" + String.valueOf(userID), RequestType.PUT,
                 Optional.of(payload));
     }
 
-    public void deposit(BigDecimal depositAmount, int accountID) {
+    public void deposit(BigDecimal depositAmount, int accountID, int userID) {
 
         JSONObject payload = new JSONObject();
         payload.put("senderID", accountID);
@@ -53,26 +44,26 @@ public class TransactionRequest {
         String formattedDateTime = currentDateTime.format(formatter);
         payload.put("transactionTimestamp", formattedDateTime);
 
-        Request request = new Request();
-        HttpResponse<String> response = request.makeRequest("transaction", RequestType.PUT,
+        Request request = new Request(token);
+        HttpResponse<String> response = request.makeRequest("transaction/" + String.valueOf(userID), RequestType.PUT,
                 Optional.of(payload));
 
     }
 
-    public void transfer(BigDecimal amount, int senderID, int receiverID) {
+    public void transfer(BigDecimal amount, int senderID, int receiverID, int userID) {
 
         JSONObject payload = new JSONObject();
         payload.put("senderID", senderID);
         payload.put("receiverID", receiverID);
         payload.put("transactionTypeID", 3);
-        payload.put("transactionAmount", amount);
+        payload.put("transactionAmount", amount.round(new MathContext(2, RoundingMode.HALF_UP)));
         LocalDateTime currentDateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         String formattedDateTime = currentDateTime.format(formatter);
         payload.put("transactionTimestamp", formattedDateTime);
 
-        Request request = new Request();
-        HttpResponse<String> response = request.makeRequest("transaction", RequestType.PUT,
+        Request request = new Request(token);
+        HttpResponse<String> response = request.makeRequest("transaction/" + String.valueOf(userID), RequestType.PUT,
                 Optional.of(payload));
     }
 

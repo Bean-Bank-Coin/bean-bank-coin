@@ -61,14 +61,12 @@ public class SessionManager {
             "                                                                                          ";
 
     public SessionManager() {
-        request = new Request();
-        HttpResponse<String> response = request.makeRequest("transactionsType", RequestType.GET, null);
     }
 
     public void startSession() {
         System.out.println(WELCOME_TO_THE_CLI);
         Scanner scanner = new Scanner(System.in);
-        Session session = new Session();
+        Session session = new Session(scanner);
         String exitCommand = session.startSession(scanner);
 
         while (!exitCommand.equals(EXIT_COMMAND)) {
