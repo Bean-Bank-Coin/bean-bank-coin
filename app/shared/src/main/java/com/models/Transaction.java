@@ -30,6 +30,22 @@ public class Transaction {
     @Column(name = "TransactionTimestamp")
     private LocalDateTime transactionTimestamp;
 
+    public Transaction(
+        int transactionID,
+        int senderID,
+        int receiverID,
+        int transactionTypeID,
+        BigDecimal transactionAmount,
+        LocalDateTime transactionTimestamp
+    ) {
+        this.transactionID = transactionID;
+        this.senderID = senderID;
+        this.receiverID = receiverID;
+        this.transactionTypeID = transactionTypeID;
+        this.transactionAmount = transactionAmount;
+        this.transactionTimestamp = transactionTimestamp;
+    }
+
     public int getTransactionID() {
         return this.transactionID;
     }

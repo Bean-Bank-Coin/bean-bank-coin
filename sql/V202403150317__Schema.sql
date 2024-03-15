@@ -19,11 +19,8 @@ CREATE TABLE `TransactionsType` (
 CREATE TABLE `User` (
     `UserID` int NOT NULL AUTO_INCREMENT,
     `UserName` varchar(120) NOT NULL,
-    `Email` varchar(120) NOT NULL,
-    `Password` varchar(120) NOT NULL,
     PRIMARY KEY (`UserID`),
-    CONSTRAINT UNIQUE (`UserName`),
-    CONSTRAINT UNIQUE (`Email`)
+    CONSTRAINT UNIQUE (`UserName`)
 );
 
 CREATE TABLE `Account` (
@@ -46,7 +43,39 @@ CREATE TABLE `Transactions` (
     `TransactionAmount` int NOT NULL,
     `TransactionTimestamp` datetime NOT NULL,
     PRIMARY KEY (`TransactionID`),
-    CONSTRAINT FOREIGN KEY(`SenderID`) REFERENCES `User` (`UserID`),
-    CONSTRAINT FOREIGN KEY(`ReceiverID`) REFERENCES `User` (`UserID`),
     CONSTRAINT FOREIGN KEY(`TransactionTypeID`) REFERENCES `TransactionsType` (`TransactionTypeID`)
 );
+
+ALTER TABLE
+    BeanType
+MODIFY
+    ValueInRands DECIMAL(65, 2) NOT NULL;
+
+ALTER TABLE
+    Transactions
+MODIFY
+    TransactionAmount DECIMAL(65, 2) NOT NULL;
+
+ALTER TABLE
+    Account
+MODIFY
+    BalanceAmount DECIMAL(65, 2) NOT NULL;
+
+INSERT INTO
+    `TransactionsType` (`TransactionTypeID`, `TransactionTypeName`)
+VALUES
+    (1, 'Deposit'),
+    (2, 'Withdrawal'),
+    (3, 'Transfer');
+
+INSERT INTO
+    `BeanType` (`BeanName`, `BeanSymbol`, `ValueInRands`)
+VALUES
+    ('Green Bean', 'GNB', 5),
+    ('Blue Bean', 'BLB', 10),
+    ('Purple Bean', 'PLB', 15),
+    ('Orange Bean', 'ORB', 20),
+    ('Red Bean', 'RDB', 25),
+    ('Yellow Bean', 'YLB', 30),
+    ('Silver Bean', 'SLB', 35),
+    ('Gold Bean', 'GLB', 40);

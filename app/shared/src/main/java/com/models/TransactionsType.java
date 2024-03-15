@@ -15,6 +15,14 @@ public class TransactionsType {
     @Column(name = "TransactionTypeName")
     private String transactionTypeName;
 
+    public TransactionsType(
+        int transactionTypeID,
+        String transactionTypeName   
+    ) {
+        this.transactionTypeID = transactionTypeID;
+        this.transactionTypeName = transactionTypeName;
+    }
+
     public int getTransactionTypeID() {
         return transactionTypeID;
     }

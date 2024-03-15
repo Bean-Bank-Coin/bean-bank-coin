@@ -23,6 +23,18 @@ public class BeanType {
     @Column(name = "ValueInRands")
     private BigDecimal valueInRands;
 
+    public BeanType(
+        int beanTypeID,
+        String beanName,
+        String beanSymbol,
+        BigDecimal valueInRands   
+    ){
+        this.beanTypeID = beanTypeID;
+        this.beanName = beanName;
+        this.beanSymbol = beanSymbol;
+        this.valueInRands = valueInRands;
+    }
+
     public int getBeanTypeID() {
         return beanTypeID;
     }

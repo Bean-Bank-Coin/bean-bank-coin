@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 @Service
@@ -57,36 +58,32 @@ public class TransactionService {
         String transactionTypeName = transactionType.getTransactionTypeName();
 
         if (transactionTypeName.equals("Deposit") || transactionTypeName.equals("Withdrawal")) {
-            BigDecimal conversionRate = beanConversionRates.get(senderAccount.getBeanTypeID());
-            BigDecimal senderBalance = senderAccount.getBalanceAmount();
-            BigDecimal newBalance;
+            Double conversionRate = beanConversionRates.get(senderAccount.getBeanTypeID()).doubleValue();
+            Double senderBalance = senderAccount.getBalanceAmount().doubleValue();
+            Double newBalance;
 
             if (transactionTypeName.equals("Deposit")) {
-                newBalance = senderBalance.add(transaction.getTransactionAmount().divide(conversionRate));
+                newBalance = senderBalance + (transaction.getTransactionAmount().doubleValue() / conversionRate);
             } else {
-                newBalance = senderBalance.subtract(transaction.getTransactionAmount().divide(conversionRate));
+                newBalance = senderBalance - (transaction.getTransactionAmount().doubleValue() / conversionRate);
             }
 
-            senderAccount.setBalanceAmount(newBalance);
+            senderAccount.setBalanceAmount(BigDecimal.valueOf(newBalance));
         } else if (transactionTypeName.equals("Transfer")) {
-            BigDecimal senderConversionRate = beanConversionRates.get(senderAccount.getBeanTypeID());
-            BigDecimal receiverConversionRate = beanConversionRates.get(receiverAccount.getBeanTypeID());
+            Double senderConversionRate = beanConversionRates.get(senderAccount.getBeanTypeID()).doubleValue();
+            Double receiverConversionRate = beanConversionRates.get(receiverAccount.getBeanTypeID()).doubleValue();
 
-            BigDecimal senderBalance = senderAccount.getBalanceAmount();
-            BigDecimal receiverBalance = receiverAccount.getBalanceAmount();
+            Double senderBalance = senderAccount.getBalanceAmount().doubleValue();
+            Double receiverBalance = receiverAccount.getBalanceAmount().doubleValue();
 
-            BigDecimal senderNewBalance = senderBalance
-                    .subtract(transaction.getTransactionAmount().divide(senderConversionRate));
+            Double senderNewBalance = senderBalance
+                    - (transaction.getTransactionAmount().doubleValue() / senderConversionRate);
 
-            BigDecimal receiverNewBalance = receiverBalance
-                    .add(transaction.getTransactionAmount().divide(receiverConversionRate));
+            Double receiverNewBalance = receiverBalance
+                    + (transaction.getTransactionAmount().doubleValue() / receiverConversionRate);
 
-            if (senderNewBalance.signum() == -1) {
-                throw new RuntimeException("Sender cannot send more than available in account");
-            }
-
-            senderAccount.setBalanceAmount(senderNewBalance);
-            receiverAccount.setBalanceAmount(receiverNewBalance);
+            senderAccount.setBalanceAmount(BigDecimal.valueOf(senderNewBalance));
+            receiverAccount.setBalanceAmount(BigDecimal.valueOf(receiverNewBalance));
         } else {
             throw new RuntimeException("Transaction type is invalid");
         }

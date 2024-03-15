@@ -1,0 +1,124 @@
+{
+	"info": {
+		"_postman_id": "4c3c221e-4cbd-4437-8a9f-52644068663e",
+		"name": "BeanType",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33495299"
+	},
+	"item": [
+		{
+			"name": "AddBeanType",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Add Bean Type\", function () {",
+							"    pm.sendRequest({",
+							"        url: \"http://localhost:8080/api/beantype\",",
+							"        method: 'PUT',",
+							"        header: {",
+							"            'Content-Type': 'application/json'",
+							"        },",
+							"        body: {",
+							"            mode: 'raw',",
+							"            raw: JSON.stringify({",
+							"                beanName: \"Some Bean\",",
+							"                beanSymbol: \"SMB\",",
+							"                valueInRands: 50",
+							"            })",
+							"        }",
+							"    }, function (err, response) {",
+							"        pm.expect(err).to.be.null;",
+							"        pm.expect(response).to.have.property('code', 200, \"Expected status code to be 200\");",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"beanName\": \"GreenBean\",\r\n    \"beanSymbol\": \"GB\",\r\n    \"valueInRands\": 8\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/beantype",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"beantype"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetBeanTypes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Get BeanTypse\", function () {\r",
+							"    pm.sendRequest({\r",
+							"        url: \"http://localhost:8080/api/beantype\",\r",
+							"        method: 'GET'\r",
+							"    }, \r",
+							"    \r",
+							"    function (err, response) {\r",
+							"        pm.expect(err).to.be.null;\r",
+							"        pm.expect(response).to.have.property('code', 200); \r",
+							"    });\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/beantype",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"beantype"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
