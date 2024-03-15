@@ -98,16 +98,32 @@ public class Session {
     }
 
     public void createAccount(Scanner scanner) {
+        String ENV_PROMPT = "Create Account > ";
         AccountRequest createNewAccount = AccountRequest.getInstance();
+        System.out.println(
+                "Grean Bean: 1, Blue Bean: 2, Purple Bean: 3, Orange Bean: 4, Red Bean: 5, Yellow Bean: 6, Silver Bean: 7, Gold Bean: 8");
         System.out.println("Enter the Bean Type ID you would like to use: ");
+        System.out.print(LINE_PROMPT + ENV_PROMPT);
         int beantypeId = Integer.parseInt(scanner.nextLine());
         BigDecimal balanceAmt = new BigDecimal(50.00);
         createNewAccount.createAccount(beantypeId, balanceAmt, true, user);
     }
 
     public void closeAccount(int userID, Scanner scanner) {
+        String ENV_PROMPT = "Close account > ";
         AccountRequest Account = AccountRequest.getInstance();
+        List<Account> userAccounts = AccountRequest.getInstance().getAccounts(userID);
+        System.out.println("Your accounts are: \n------------------");
+
+        for (Account userAccount : userAccounts) {
+            System.out.println(
+                    "Account " + userAccount.getAccountID() + " has balance R"
+                            + convertToRands(userAccount.getBalanceAmount(), userAccount.getBeanTypeID()));
+        }
+
+        System.out.println();
         System.out.println("Please specify the account ID you would like to close: ");
+        System.out.print(LINE_PROMPT + ENV_PROMPT);
         int accID = scanner.nextInt();
         if (Account.closeAccount(userID, accID) == false) {
             System.out.println("Account closed successfully.");
