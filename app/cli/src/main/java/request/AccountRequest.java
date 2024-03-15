@@ -19,15 +19,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.models.Account;
+import com.models.User;
 
 public class AccountRequest {
     private static AccountRequest accountRequest = null;
+    public static String token = "";
 
     public List<Account> getAccounts(int userID) throws JSONException {
-
-        Request request = new Request();
+        Request request = new Request(token);
         HttpResponse<String> response = request.makeRequest("accounts/" + String.valueOf(userID), RequestType.GET,
-                null);
+                Optional.empty());
 
         if (response.body().isEmpty())
             return Collections.emptyList();
@@ -49,9 +50,9 @@ public class AccountRequest {
         return userAccounts;
     }
 
-    public void createAccount(int userID, int beanTypeID, BigDecimal balanceAmount, boolean isClosed) {
+    public void createAccount(int beanTypeID, BigDecimal balanceAmount, boolean isClosed, User currentUser) {
         JSONObject payload = new JSONObject();
-        payload.put("userID", userID);
+        payload.put("userID", currentUser.getUserID());
         payload.put("beanTypeID", beanTypeID);
         payload.put("balanceAmount", balanceAmount);
         LocalDateTime currentDateTime = LocalDateTime.now();
@@ -60,8 +61,10 @@ public class AccountRequest {
         payload.put("dateCreated", formattedDateTime);
         payload.put("closed", false);
 
-        Request request = new Request();
-        HttpResponse<String> response = request.makeRequest("accounts", RequestType.POST, Optional.of(payload));
+        Request request = new Request(token);
+        HttpResponse<String> response = request.makeRequest("accounts/" + currentUser.getUsername(), RequestType.POST,
+                Optional.of(payload));
+        System.out.println("Account created!");
     }
 
     private AccountRequest() {
