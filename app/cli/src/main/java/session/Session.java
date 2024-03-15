@@ -137,9 +137,9 @@ public class Session {
         } else if (userInput.equals(DASHBOARD_COMMAND)) {
             getDashBoard(currUser.getUserID());
         } else if (userInput.equals(CREATE_ACCOUNT_COMMAND)) {
-            System.out.println("Create Account");
+            createAccount(currUser.getUserID());
         } else if (userInput.equals(CLOSE_ACCOUNT_COMMAND)) {
-            System.out.println("Close Account");
+            closeAccount(currUser.getUserID());
         } else if (userInput.equals(DEPOSIT_COMMAND)) {
             deposit(scanner, currUser);
         } else if (userInput.equals(WITHDRAW_COMMAND)) {
@@ -147,10 +147,31 @@ public class Session {
         } else if (userInput.equals(TRANSFER_COMMAND)) {
             transfer(scanner, currUser);
         } else if (userInput.equals(HOME_COMMAND)) {
-            System.out.println("Home");
         } else {
             System.out.println("Invalid command. Type -help for a list of commands.");
         }
+    }
+
+    public void createAccount(int userID) {
+        AccountRequest createNewAccount = AccountRequest.getInstance();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the Bean Type ID you would like to use: ");
+        int beantypeId = scanner.nextInt();
+        BigDecimal balanceAmt = new BigDecimal(50.00);
+        createNewAccount.createAccount(userID, beantypeId, balanceAmt, true);
+    }
+
+    public void closeAccount(int userID) {
+        AccountRequest Account = AccountRequest.getInstance();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Please specify the account ID you would like to close: ");
+        int accID = scanner.nextInt();
+        if (Account.closeAccount(userID, accID) == false) {
+            System.out.println("Account closed successfully.");
+        } else {
+            System.out.println("Account can not be closed");
+        }
+
     }
 
     public void transfer(Scanner scanner, User currUser) {
@@ -537,9 +558,10 @@ public class Session {
             for (Account acc : accountList) {
                 if (!acc.getClosed()) {
                     System.out.print("\nAccount " + acc.getAccountID() + " details: \n---------------------\n");
-                    System.out.print("Bean Type: " + getBeanName(acc.getBeanTypeID()));
+                    System.out.println("Bean Type: " + getBeanName(acc.getBeanTypeID()));
+                    System.out.println("Number of Beans: " + acc.getBalanceAmount());
                     System.out.print(
-                            ", Balance Amount: " + "R" + convertToRands(acc.getBalanceAmount(), acc.getBeanTypeID())
+                            "Balance Amount: " + "R" + convertToRands(acc.getBalanceAmount(), acc.getBeanTypeID())
                                     + "\n");
                 }
             }

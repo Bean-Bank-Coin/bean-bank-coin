@@ -1,8 +1,10 @@
 package request;
 
+import java.math.BigDecimal;
 import java.net.http.HttpResponse;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -47,6 +49,21 @@ public class AccountRequest {
         return userAccounts;
     }
 
+    public void createAccount(int userID, int beanTypeID, BigDecimal balanceAmount, boolean isClosed) {
+        JSONObject payload = new JSONObject();
+        payload.put("userID", userID);
+        payload.put("beanTypeID", beanTypeID);
+        payload.put("balanceAmount", balanceAmount);
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        String formattedDateTime = currentDateTime.format(formatter);
+        payload.put("dateCreated", formattedDateTime);
+        payload.put("closed", false);
+
+        Request request = new Request();
+        HttpResponse<String> response = request.makeRequest("accounts", RequestType.POST, Optional.of(payload));
+    }
+
     private AccountRequest() {
     }
 
@@ -58,4 +75,26 @@ public class AccountRequest {
         return accountRequest;
     }
 
+    public boolean closeAccount(int userID, int accountID) {
+        // Request request = new Request();
+        // HttpResponse<String> response = request.makeRequest("accounts/" +
+        // String.valueOf(userID), RequestType.GET,
+        // null);
+
+        // System.out.println(response.body());
+
+        // JSONArray userAccountsJson = new JSONArray(response.body());
+        // List<Account> userAccounts = new ArrayList<>();
+        // for (int i = 0; i < userAccountsJson.length(); i++) {
+        // JSONObject accountJson = userAccountsJson.getJSONObject(i);
+        // boolean isClosed = accountJson.getBoolean("isClosed");
+        // if (userAccounts.contains(accountJson.getInt("accountID"))) {
+        // isClosed = false;
+        // return false;
+        // } else {
+        // return true;
+        // }
+        // }
+        return false;
+    }
 }
